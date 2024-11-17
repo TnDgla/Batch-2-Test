@@ -15,3 +15,11 @@ tr {
 tr:hover {
     background-color: rgba(255, 255, 255, 0.1);
 }
+.nametext{
+    /* height: 30px;
+    border-radius: 3px; */
+    width: 160px;
+    padding-left: 20px;
+    color: black;
+    /* background-color: rgb(234, 225, 225); */
+}
