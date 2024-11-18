@@ -142,6 +142,29 @@ document.addEventListener('DOMContentLoaded', async () => {
             const sortedData = sortData(filteredData, 'hardSolved', hardSolvedDirection, true);
             renderLeaderboard(sortedData);
         });
+        let btn1=document.getElementById('search');
+        let btn2=document.getElementById('btn');
+        btn2.addEventListener('click',()=>{
+            let a=btn1.value;
+            let b=a.toUpperCase();
+            let n=data.filter(student =>student.name.startsWith(b))
+            renderLeaderboard(n);
+
+
+        });
+        let btn3=document.getElementById('change');
+        btn3.addEventListener('click',()=>{
+            let a=btn3.value;
+            if(a=='Light'){
+                btn3.innerText='Dark';
+            }
+            else{
+                btn3.innerText='Light';
+            }
+        });
+        
+
+        
 
     } catch (error) {
         console.error('Error fetching data:', error);

@@ -15,3 +15,13 @@ tr {
 tr:hover {
     background-color: rgba(255, 255, 255, 0.1);
 }
+.pie{
+    width:200px;
+    height:200px;
+    background-image: conic-gradient(
+        
+        pink 70 deg,
+        orange 40 deg,
+    );
+}
+
