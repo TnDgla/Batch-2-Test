@@ -2,6 +2,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
         const response = await fetch("http://localhost:3001/data");
         const data = await response.json();
+        console.log('====================================');
+        console.log(data);
+        console.log('====================================');
         let filteredData = [...data]; // Keep original data separate
         const leaderboardBody = document.getElementById('leaderboard-body');
         const sectionFilter = document.getElementById('section-filter');
@@ -99,6 +102,51 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             });
         };
+
+        document.getElementById('search-input').addEventListener('input', (e) => {
+            // console.log('====================================');
+            // console.log(data);
+            // console.log('====================================');
+            // console.log(e.target.value);
+            const searchValue = e.target.value.toLowerCase();
+            // console.log('====================================');
+            // console.log(searchValue);
+            // console.log('====================================');
+            const filteredData = data.filter(student=>student.name.toLowerCase()
+                                                                .includes(searchValue));
+            // console.log('====================================');
+            // console.log(filteredData);
+            // console.log('====================================');
+            renderLeaderboard(filteredData);
+        });
+
+        const filterSection = (section) => {
+            const len=data.filter(student=>student.section==section).length;
+            return len;
+        };
+
+
+            new Chart(document.getElementById('myChart'), {
+            type: "pie",
+            data: {
+                labels:["C","D","E","F","G","H","A(H)","AC","AD","AE"],
+                datasets:[
+                    {
+                        backgroundColor:["red","green","yellow","orange","pink","black","aqua","aliceblue","brown","cadetblue"],
+                        data:[filterSection("C"),filterSection("D"),filterSection("E"),filterSection("F"),filterSection("G"),filterSection("H"),filterSection("A(H)"),filterSection("AC"),filterSection("AD"),filterSection("AE")]
+                    }
+                ],
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: "Section Wise Data"
+                },
+
+            }
+        });
+
+        
 
         // Initialize the page
         populateSectionFilter();
