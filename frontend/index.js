@@ -142,8 +142,76 @@ document.addEventListener('DOMContentLoaded', async () => {
             const sortedData = sortData(filteredData, 'hardSolved', hardSolvedDirection, true);
             renderLeaderboard(sortedData);
         });
+        const pieChartCanvas = document.getElementById('section-pie-chart');
+        const calculateSectionDistribution = () => {
+                        const sectionCounts = {};
+                        data.forEach(student => {
+                            const section = student.section || 'N/A';
+                            sectionCounts[section] = (sectionCounts[section] || 0) + 1;
+                        });
+                        return sectionCounts;
+                    };
+        // Function to render the pie chart
+        const renderPieChart = () => {
+            console.log("calculating")
+            const sectionDistribution = calculateSectionDistribution();
+            const labels = Object.keys(sectionDistribution);
+            const values = Object.values(sectionDistribution);
 
-    } catch (error) {
+            new Chart(pieChartCanvas, {
+                type: 'pie',
+                data: {
+                    labels,
+                    datasets: [
+                        {
+                            data: values,
+                            backgroundColor: [
+                                'rgba(244, 10, 131, 0.8)',
+                                'rgba(86, 244, 10, 0.8)',
+                                'rgba(61, 10, 244, 0.8)',
+                                'rgba(244, 227, 10, 0.8)',
+                                'rgba(244, 227, 10, 0.04)',
+                                'rgba(10, 208, 244, 0.87)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: (context) => {
+                                    const total = values.reduce((a, b) => a + b, 0);
+                                    const percentage = ((context.raw / total) * 100).toFixed(2);
+                                    return `${context.label}: ${context.raw} (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        };
+
+        // Render the pie chart after loading data
+        renderPieChart();
+
+
+    } 
+
+    catch (error) {
         console.error('Error fetching data:', error);
     }
 });
@@ -168,3 +236,10 @@ document.addEventListener('DOMContentLoaded', function () {
         }  
     });  
 });
+// Sample data structure you might receive from your data source.  
+const sectionData = {  
+    easy: 15,  
+    medium: 10,  
+    hard: 5  
+};  
+
