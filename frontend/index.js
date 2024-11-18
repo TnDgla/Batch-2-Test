@@ -99,11 +99,21 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             });
         };
-
         // Initialize the page
         populateSectionFilter();
-        renderLeaderboard(data);
+        renderLeaderboard(data); 
+        // Search Bar
+        const searchInput = document.getElementById('search');
+        searchInput.addEventListener('input', () => {
+            const searchQuery = searchInput.value.toLowerCase();
+            const filteredData = data.filter((entry) =>
+                entry.name.toLowerCase().includes(searchQuery) ||
+            (entry.roll && entry.roll.toLowerCase().includes(searchQuery))
+            );
+            renderLeaderboard(filteredData);
+        });
 
+        
         // Event Listeners
         sectionFilter.addEventListener('change', (e) => {
             filterData(e.target.value);

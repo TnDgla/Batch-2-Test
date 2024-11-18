@@ -15,12 +15,17 @@
                 <div class="flex justify-between items-center mb-6">
                     <h1 class="text-4xl font-bold">TBPPP Leaderboard</h1>
                     <div class="flex gap-4 items-center">
-                        <select id="section-filter" class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <input type="text" id="search" class="bg-grey-700 text-black" placeholder="Search... by name" style="border-radius: 10px ; padding: 8px;">
+                        <select id="section-filter" class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500" style="border-radius: 10px; padding: 8px;">
                             <option value="all">All Sections</option>
                             <!-- Options will be dynamically added -->
+                            <!-- Pie - Chart -->
                         </select>
-                        <button id="export-btn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded flex items-center transition duration-150 ease-in-out">
+                        <button id="export-btn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded flex items-center transition duration-150 ease-in-out" style="border-radius: 10px; padding: 8px;">
                             <i class="fas fa-download mr-2"></i> Export to CSV
+                        </button>
+                        <button id="export-btn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded flex items-center transition duration-150 ease-in-out" style="border-radius: 10px; padding: 8px;">
+                            Pie-Chart
                         </button>
                     </div>
                 </div>
