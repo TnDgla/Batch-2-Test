@@ -100,6 +100,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         };
 
+        const searchInput= document.getElementById('search');
+        const searchbtn = document.getElementById('button');
+        searchbtn.addEventListener('click',()=>{
+            const target = searchInput.value.toUpperCase();
+            filteredData = data.filter(student => (student.name).startsWith(target));
+            renderLeaderboard(filteredData);
+        })
+
         // Initialize the page
         populateSectionFilter();
         renderLeaderboard(data);
