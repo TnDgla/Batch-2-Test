@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     student.url
                 ].join(',');
             });
-            
+
             const csvContent = [headers.join(','), ...csvRows].join('\n');
             const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement('a');
@@ -57,9 +57,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <td class="p-4">${index + 1}</td>
                     <td class="p-4">${student.roll}</td>
                     <td class="p-4">
-                        ${student.url.startsWith('https://leetcode.com/u/') 
-                            ? `<a href="${student.url}" target="_blank" class="text-blue-400">${student.name}</a>`
-                            : `<div class="text-red-500">${student.name}</div>`}
+                        ${student.url.startsWith('https://leetcode.com/u/')
+                        ? `<a href="${student.url}" target="_blank" class="text-blue-400">${student.name}</a>`
+                        : `<div class="text-red-500">${student.name}</div>`}
                     </td>
                     <td class="p-4">${student.section || 'N/A'}</td>
                     <td class="p-4">${student.totalSolved || 'N/A'}</td>
@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Filter function
         const filterData = (section) => {
-            filteredData = section === 'all' 
+            filteredData = section === 'all'
                 ? [...data]
                 : data.filter(student => (student.section || 'N/A') === section);
             renderLeaderboard(filteredData);
@@ -141,6 +141,90 @@ document.addEventListener('DOMContentLoaded', async () => {
             hardSolvedDirection = hardSolvedDirection === 'desc' ? 'asc' : 'desc';
             const sortedData = sortData(filteredData, 'hardSolved', hardSolvedDirection, true);
             renderLeaderboard(sortedData);
+        });
+
+        document.getElementById('search-btn').addEventListener('click', function () {
+            const searchValue = document.getElementById('search-input').value.toLowerCase();
+            const rows = document.querySelectorAll('#leaderboard-body tr');
+
+            rows.forEach(row => {
+                const nameCell = row.querySelector('td:nth-child(3)'); // Assuming the name is in the 3rd column
+                if (nameCell) {
+                    const nameText = nameCell.textContent.toLowerCase();
+                    row.style.display = nameText.includes(searchValue) ? '' : 'none';
+                }
+            });
+        });
+
+        // Optional: Allow searching by pressing Enter key
+        document.getElementById('search-input').addEventListener('keypress', function (event) {
+            if (event.key === 'Enter') {
+                document.getElementById('search-btn').click();
+            }
+        });
+
+        // Ensure Chart.js is included in your project
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+        document.head.appendChild(script);
+
+        // Function to create the pie chart
+        function createPieChart(data) {
+            const ctx = document.getElementById('section-pie-chart').getContext('2d');
+            const labels = data.map(item => item.section);
+            const counts = data.map(item => item.count);
+
+            const pieChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Participants by Section',
+                        data: counts,
+                        backgroundColor: [
+                            'rgba(75, 192, 192, 0.6)',
+                            'rgba(255, 99, 132, 0.6)',
+                            'rgba(255, 206, 86, 0.6)',
+                            'rgba(54, 162, 235, 0.6)'
+                        ],
+                        borderColor: 'rgba(255, 255, 255, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Section-wise Distribution of Participants'
+                        }
+                    }
+                }
+            });
+
+            // Show the canvas
+            document.getElementById('section-pie-chart').style.display = 'block';
+        }
+
+        // Event listener for the new button
+        document.getElementById('show-section-wise-pie-chart-btn').addEventListener('click', function () {
+            fetch('data.json')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    createPieChart(data); // Call the function with the fetched data
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                    alert('Error loading data. Please try again later.');
+                });
         });
 
     } catch (error) {
