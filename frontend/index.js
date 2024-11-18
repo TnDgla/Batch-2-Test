@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         const response = await fetch("http://localhost:3001/data");
@@ -5,6 +6,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         let filteredData = [...data]; // Keep original data separate
         const leaderboardBody = document.getElementById('leaderboard-body');
         const sectionFilter = document.getElementById('section-filter');
+        const searchBar = document.getElementById('search-bar');
 
         // Populate section filter dropdown
         const populateSectionFilter = () => {
@@ -34,7 +36,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     student.url
                 ].join(',');
             });
-            
+
             const csvContent = [headers.join(','), ...csvRows].join('\n');
             const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement('a');
@@ -71,15 +73,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         };
 
-        // Filter function
-        const filterData = (section) => {
-            filteredData = section === 'all' 
-                ? [...data]
-                : data.filter(student => (student.section || 'N/A') === section);
+        const filterData = (section, searchQuery) => {
+            filteredData = data.filter(student => {
+                const matchesSection = section === 'all' || (student.section || 'N/A') === section;
+                const matchesSearch = student.name.toLowerCase().includes(searchQuery.toLowerCase());
+                return matchesSection && matchesSearch;
+            });
             renderLeaderboard(filteredData);
         };
 
-        // Sorting logic with ascending and descending functionality
         let totalSolvedDirection = 'desc';
         let easySolvedDirection = 'desc';
         let mediumSolvedDirection = 'desc';
@@ -106,7 +108,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Event Listeners
         sectionFilter.addEventListener('change', (e) => {
-            filterData(e.target.value);
+            filterData(e.target.value, searchBar.value); // Filter by section and search query
+        });
+
+        searchBar.addEventListener('input', (e) => {
+            filterData(sectionFilter.value, e.target.value); // Filter by search query and section
         });
 
         document.getElementById('export-btn').addEventListener('click', () => {
@@ -146,4 +152,36 @@ document.addEventListener('DOMContentLoaded', async () => {
     } catch (error) {
         console.error('Error fetching data:', error);
     }
+}); 
+
+const xValues = ["A(H)","AC","AD","AE","C","D","E","F","G","H"];
+const yValues = [78,76,65,70,72,71,67,75,72,74];
+const barColors = [
+  "#b91d47",
+  "#00aba9",
+  "#2b5797",
+  "#e8c3b9",
+  "#1e7145",
+  "blue",
+  "green",
+  "orange",
+  "pink",
+  "white"
+];
+
+new Chart("myChart", {
+  type: "pie",
+  data: {
+    labels: xValues,
+    datasets: [{
+      backgroundColor: barColors,
+      data: yValues
+    }]
+  },
+  options: {
+    title: {
+      display: true,
+      text: "Section-Wise Performance"
+    }
+  }
 });
