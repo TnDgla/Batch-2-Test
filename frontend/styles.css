@@ -15,3 +15,38 @@ tr {
 tr:hover {
     background-color: rgba(255, 255, 255, 0.1);
 }
+#Search{
+    height: 100%;
+    padding: 10px;
+    background-color: rgb(59, 59, 98);
+    border: 1px solid black;
+    border-radius: 5px;
+    outline: none;
+    color: black;
+}
+#chart{
+    display: flex;
+    border: 1px solid black;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    background-color: rgb(5, 29, 108);
+    border-radius: 10px;
+}
+#chart h2{
+    font-size: 25px;
+    color: aliceblue;
+}
+#allCharts{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+#allCharts > *{
+    background-color: rgb(211, 231, 246);
+    border-radius: 12px;
+    border: 1px solid red;
+    margin: 20px;
+}
