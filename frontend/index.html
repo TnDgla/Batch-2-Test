@@ -15,6 +15,16 @@
                 <div class="flex justify-between items-center mb-6">
                     <h1 class="text-4xl font-bold">TBPPP Leaderboard</h1>
                     <div class="flex gap-4 items-center">
+                        <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
+
+
+
+                    <div>
+                        <a class="active" href="#searchfunction" style="color:lightseagreen">Search</a>
+                        <input type="text" placeholder="search by name" style="background-color:rgba(119, 136, 153, 0.685) ">
+                    </div>
+
+
                         <select id="section-filter" class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <option value="all">All Sections</option>
                             <!-- Options will be dynamically added -->
@@ -64,6 +74,7 @@
                     </thead>
                     <tbody id="leaderboard-body">
                         <!-- Data will be dynamically added here -->
+                        
                     </tbody>
                 </table>
 
