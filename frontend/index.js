@@ -142,6 +142,17 @@ document.addEventListener('DOMContentLoaded', async () => {
             const sortedData = sortData(filteredData, 'hardSolved', hardSolvedDirection, true);
             renderLeaderboard(sortedData);
         });
+        const searchBtn = document.getElementById('search-btn');
+        searchBtn.addEventListener('click', () => { 
+            const searchInput = document.getElementById('search-input');
+            const searchTerm = searchInput.value.toLowerCase();
+            const filteredData = data.filter(student => (
+                student.roll.toString().includes(searchTerm) ||
+                student.name.toLowerCase().includes(searchTerm) ||
+                (student.section || 'N/A').toLowerCase().includes(searchTerm)
+            ));
+            renderLeaderboard(filteredData);
+        });
 
     } catch (error) {
         console.error('Error fetching data:', error);
