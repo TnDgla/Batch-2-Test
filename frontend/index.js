@@ -143,6 +143,16 @@ document.addEventListener('DOMContentLoaded', async () => {
             renderLeaderboard(sortedData);
         });
 
+        const search_input = document.getElementById('search_input');
+        const search_btn = document.getElementById('search_btn');
+
+        document.getElementById('search_btn').addEventListener('click',()=>{
+            let s = search_input.value;
+            let new_s=s.toUpperCase();
+            const d = data.filter(student => student.name.startsWith(new_s));
+            renderLeaderboard(d);
+        })
+
     } catch (error) {
         console.error('Error fetching data:', error);
     }
