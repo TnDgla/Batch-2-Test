@@ -100,14 +100,28 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         };
 
+        const filterByName = () =>{
+            //It will work if u search full name
+            var x = document.getElementById('search-space');
+            filterDataByName = x.value==''
+                ?[...data]
+                : data.filter(student => ((student.name)===x.value.toUpperCase()));
+            renderLeaderboard(filterDataByName);
+        }
+
         // Initialize the page
         populateSectionFilter();
         renderLeaderboard(data);
 
         // Event Listeners
+
+        document.getElementById('search-space').addEventListener('search',filterByName)
+
+
         sectionFilter.addEventListener('change', (e) => {
             filterData(e.target.value);
         });
+
 
         document.getElementById('export-btn').addEventListener('click', () => {
             exportToCSV(filteredData); // Export only filtered data
