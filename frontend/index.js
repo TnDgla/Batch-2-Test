@@ -50,6 +50,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Function to render the leaderboard
         const renderLeaderboard = (sortedData) => {
             leaderboardBody.innerHTML = '';
+
             sortedData.forEach((student, index) => {
                 const row = document.createElement('tr');
                 row.classList.add('border-b', 'border-gray-700');
@@ -108,6 +109,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         sectionFilter.addEventListener('change', (e) => {
             filterData(e.target.value);
         });
+
+        //Task 1 : Search function
+        const searchInput = document.getElementById('search');
+        const searchBtn = document.getElementById('search-btn');
+
+        searchBtn.addEventListener('click', ()=>{
+            const target = searchInput.value.toUpperCase();
+            filteredData = data.filter(student => (student.name).startsWith(target));
+            renderLeaderboard(filteredData)
+        })
 
         document.getElementById('export-btn').addEventListener('click', () => {
             exportToCSV(filteredData); // Export only filtered data
