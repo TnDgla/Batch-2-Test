@@ -1,8 +1,34 @@
+import Chart from 'chart.js/auto'
+
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         const response = await fetch("http://localhost:3001/data");
         const data = await response.json();
+
+        // search data
         let filteredData = [...data]; // Keep original data separate
+        const inp = document.getElementById('inp');
+        const btn = document.getElementById('btn');
+        btn.addEventListener('click',()=>{
+            let val = inp.value;
+            if(val != ""){
+                const l = [];
+                for(let ele of filteredData){
+                    val = val.toLowerCase();
+                    let check = ele.name.toLowerCase();
+                    if(check.includes(val)){
+                        l.push(ele);
+                    }
+                }
+                renderLeaderboard(l);
+            }
+        })
+
+
+        
+         
+
+
         const leaderboardBody = document.getElementById('leaderboard-body');
         const sectionFilter = document.getElementById('section-filter');
 
