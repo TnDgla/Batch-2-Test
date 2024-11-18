@@ -147,3 +147,32 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error('Error fetching data:', error);
     }
 });
+
+
+function filterTable() {
+    const query = document.getElementById("searchBar").value.toLowerCase();
+    const rows = document.querySelectorAll("#leaderboard tbody tr");
+
+    rows.forEach(row => {
+        const name = row.querySelector("td.name").textContent.toLowerCase();
+        row.style.display = name.includes(query) ? "" : "none";
+    });
+}
+
+const sectionData = {
+    labels: ['D', 'AC', 'E'], 
+    datasets: [{
+        data: [10, 20, 30], 
+        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
+    }]
+};
+
+const config = {
+    type: 'pie',
+    data: sectionData
+};
+
+const sectionChart = new Chart(
+    document.getElementById('sectionChart'),
+    config
+);
