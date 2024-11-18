@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     student.url
                 ].join(',');
             });
-            
+
             const csvContent = [headers.join(','), ...csvRows].join('\n');
             const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement('a');
@@ -57,9 +57,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <td class="p-4">${index + 1}</td>
                     <td class="p-4">${student.roll}</td>
                     <td class="p-4">
-                        ${student.url.startsWith('https://leetcode.com/u/') 
-                            ? `<a href="${student.url}" target="_blank" class="text-blue-400">${student.name}</a>`
-                            : `<div class="text-red-500">${student.name}</div>`}
+                        ${student.url.startsWith('https://leetcode.com/u/')
+                        ? `<a href="${student.url}" target="_blank" class="text-blue-400">${student.name}</a>`
+                        : `<div class="text-red-500">${student.name}</div>`}
                     </td>
                     <td class="p-4">${student.section || 'N/A'}</td>
                     <td class="p-4">${student.totalSolved || 'N/A'}</td>
@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Filter function
         const filterData = (section) => {
-            filteredData = section === 'all' 
+            filteredData = section === 'all'
                 ? [...data]
                 : data.filter(student => (student.section || 'N/A') === section);
             renderLeaderboard(filteredData);
@@ -142,6 +142,44 @@ document.addEventListener('DOMContentLoaded', async () => {
             const sortedData = sortData(filteredData, 'hardSolved', hardSolvedDirection, true);
             renderLeaderboard(sortedData);
         });
+
+        // document.getElementById('ques').addEventListener('click', () => {
+        //     const SearchedText = document.getElementById('Search').value
+        //     const SearchedData = filteredData.filter
+        // })
+
+        
+        const xValues = ["A(H)", "AC", "D", "E", "AE","AD","F","G","H"];
+        const yValues = [33, 50, 73, 72, 64, 54, 76, 48, 74];
+        const barColors = [
+            "red",
+            "blue",
+            "green",
+            "beige",
+            "purple",
+            "yellow",
+            "orange",
+            "pink",
+            "brown"
+        ];
+
+        new Chart("myChart", {
+            type: "pie",
+            data: {
+                labels: xValues,
+                datasets: [{
+                    backgroundColor: barColors,
+                    data: yValues
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: "Student Distribution Sectionwise"
+                }
+            }
+        });
+
 
     } catch (error) {
         console.error('Error fetching data:', error);
