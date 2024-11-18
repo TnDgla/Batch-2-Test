@@ -2,11 +2,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
         const response = await fetch("http://localhost:3001/data");
         const data = await response.json();
-        let filteredData = [...data]; // Keep original data separate
+        let filteredData = [...data]; 
         const leaderboardBody = document.getElementById('leaderboard-body');
         const sectionFilter = document.getElementById('section-filter');
 
-        // Populate section filter dropdown
+       
         const populateSectionFilter = () => {
             const sections = [...new Set(data.map(student => student.section || 'N/A'))].sort();
             sectionFilter.innerHTML = '<option value="all">All Sections</option>';
@@ -18,7 +18,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         };
 
-        // Function to export data to CSV
         const exportToCSV = (data) => {
             const headers = ['Rank', 'Roll Number', 'Name', 'Section', 'Total Solved', 'Easy', 'Medium', 'Hard', 'LeetCode URL'];
             const csvRows = data.map((student, index) => {
@@ -46,8 +45,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             link.click();
             document.body.removeChild(link);
         };
-
-        // Function to render the leaderboard
         const renderLeaderboard = (sortedData) => {
             leaderboardBody.innerHTML = '';
             sortedData.forEach((student, index) => {
@@ -58,8 +55,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <td class="p-4">${student.roll}</td>
                     <td class="p-4">
                         ${student.url.startsWith('https://leetcode.com/u/') 
-                            ? `<a href="${student.url}" target="_blank" class="text-blue-400">${student.name}</a>`
-                            : `<div class="text-red-500">${student.name}</div>`}
+                            ? <a href="${student.url}" target="_blank" class="text-blue-400">${student.name}</a>
+                            : <div class="text-red-500">${student.name}</div>}
                     </td>
                     <td class="p-4">${student.section || 'N/A'}</td>
                     <td class="p-4">${student.totalSolved || 'N/A'}</td>
@@ -71,7 +68,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         };
 
-        // Filter function
+      
         const filterData = (section) => {
             filteredData = section === 'all' 
                 ? [...data]
@@ -79,7 +76,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             renderLeaderboard(filteredData);
         };
 
-        // Sorting logic with ascending and descending functionality
+       
         let totalSolvedDirection = 'desc';
         let easySolvedDirection = 'desc';
         let mediumSolvedDirection = 'desc';
@@ -100,17 +97,17 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         };
 
-        // Initialize the page
+       
         populateSectionFilter();
         renderLeaderboard(data);
 
-        // Event Listeners
+       
         sectionFilter.addEventListener('change', (e) => {
             filterData(e.target.value);
         });
 
         document.getElementById('export-btn').addEventListener('click', () => {
-            exportToCSV(filteredData); // Export only filtered data
+            exportToCSV(filteredData); 
         });
 
         document.getElementById('sort-section').addEventListener('click', () => {
@@ -141,6 +138,43 @@ document.addEventListener('DOMContentLoaded', async () => {
             hardSolvedDirection = hardSolvedDirection === 'desc' ? 'asc' : 'desc';
             const sortedData = sortData(filteredData, 'hardSolved', hardSolvedDirection, true);
             renderLeaderboard(sortedData);
+        });
+        document.getElementById('search-bar').addEventListener('input', function() {
+            const searchValue = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#leaderboard-body tr');
+            
+            rows.forEach(row => {
+                const rowText = row.textContent.toLowerCase();
+                row.style.display = rowText.includes(searchValue) ? '' : 'none';
+            });
+        });
+        
+        const sectionData = {
+            'Section A': 10,
+            'Section B': 20,
+            'Section C': 30,
+            'Section D': 15
+        };
+        
+        const ctx = document.getElementById('sectionPieChart').getContext('2d');
+        const sectionPieChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: Object.keys(sectionData),
+                datasets: [{
+                    data: Object.values(sectionData),
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
+                    hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    }
+                }
+            }
         });
 
     } catch (error) {
