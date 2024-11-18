@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         let filteredData = [...data]; // Keep original data separate
         const leaderboardBody = document.getElementById('leaderboard-body');
         const sectionFilter = document.getElementById('section-filter');
+        const nameFilter=document.getElementById('name')
 
         // Populate section filter dropdown
         const populateSectionFilter = () => {
@@ -79,6 +80,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             renderLeaderboard(filteredData);
         };
 
+        const filterDatabyname = (name) => {
+            filteredData = name === 'all' 
+                ? [...data]
+                : data.filter(student => (student.name || 'null') === name);
+            renderLeaderboard(filteredDatabyname);
+        };
+
+        
         // Sorting logic with ascending and descending functionality
         let totalSolvedDirection = 'desc';
         let easySolvedDirection = 'desc';
