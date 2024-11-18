@@ -5,6 +5,53 @@ document.addEventListener('DOMContentLoaded', async () => {
         let filteredData = [...data]; // Keep original data separate
         const leaderboardBody = document.getElementById('leaderboard-body');
         const sectionFilter = document.getElementById('section-filter');
+        const searchData=document.querySelector("#myInput");
+        const search=document.querySelector("#SearchButton");
+        searchData.addEventListener("onkeyup",function(){
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("td");
+            for (i = 0; i < td.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0];
+                if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }       
+            }
+        })
+        // search.addEventListener("click",function(){
+        //     const name=searchData.value;
+        //     // console.log(name);
+        //     searchName(name,data);
+        // })
+        // const searchName=(name,data)=>{            
+        //     data.forEach((student,index)=> {
+        //         if(student.name==name){
+        //             // r.parentNode.removeChild();
+        //             const row = document.createElement('tr');
+        //             row.classList.add('border-b', 'border-gray-700');
+        //             row.innerHTML = `
+        //             <td class="p-4">${index + 1}</td>
+        //             <td class="p-4">${student.roll}</td>
+        //             <td class="p-4">
+        //                 ${student.url.startsWith('https://leetcode.com/u/') 
+        //                     ? `<a href="${student.url}" target="_blank" class="text-blue-400">${student.name}</a>`
+        //                     : `<div class="text-red-500">${student.name}</div>`}
+        //             </td>
+                    
+        //         `;
+        //         leaderboardBody.appendChild(row);
+        //         }
+
+                
+        //     })
+        // }
 
         // Populate section filter dropdown
         const populateSectionFilter = () => {
