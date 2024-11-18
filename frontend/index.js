@@ -5,7 +5,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         let filteredData = [...data]; // Keep original data separate
         const leaderboardBody = document.getElementById('leaderboard-body');
         const sectionFilter = document.getElementById('section-filter');
-
+        const search=document.getElementById('search-bar');
+        const icon=document.getElementById('search-icon');
         // Populate section filter dropdown
         const populateSectionFilter = () => {
             const sections = [...new Set(data.map(student => student.section || 'N/A'))].sort();
@@ -100,6 +101,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         };
 
+        const searchBar = (section)=>{
+            filteredData=data.filter((student)=>
+                student?.name?.includes(search.value.toUpperCase()))   
+            renderLeaderboard(filteredData);
+
+        }
+
         // Initialize the page
         populateSectionFilter();
         renderLeaderboard(data);
@@ -107,6 +115,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Event Listeners
         sectionFilter.addEventListener('change', (e) => {
             filterData(e.target.value);
+        });
+        icon.addEventListener('click', (e) => {
+            searchBar(e.target.value);
         });
 
         document.getElementById('export-btn').addEventListener('click', () => {
@@ -142,6 +153,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const sortedData = sortData(filteredData, 'hardSolved', hardSolvedDirection, true);
             renderLeaderboard(sortedData);
         });
+        
 
     } catch (error) {
         console.error('Error fetching data:', error);
