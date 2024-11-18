@@ -1,0 +1,16 @@
+IDEA :- 
+
+We can make a feature like, students can create groups and add their friends in the group and it will create a mini dashboard for those particular students, it can help students to compete with their friends and it will be fun and encourage them to up their rank.
+
+IMPLEMENTATION :-
+
+1. First we will create a frontend which is basically a form to create a group and add students in it.
+2. Now we have data like group name and it's members, now we can save the group and render those particular students in the mini dashboard of the group.
+3. We get those students by filtering them from the main data, and then we can show their data in the dashboard.
+
+
+SMALL UPGRADES :-
+
+1. we can add trophies of ranks for 1,2 and 3 in front of their names, or we can change UI to give more space to first three places.
+
+2. Ranking students on basis of no. of questions solved is not right i think, instead we can calculate score like 1 point for easy, 3 for medium and 5 for hard. This will properly rank students, like if some student solved 1000 easy questions is not equal to 1000 hard questions.
