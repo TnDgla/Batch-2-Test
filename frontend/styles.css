@@ -15,3 +15,24 @@ tr {
 tr:hover {
     background-color: rgba(255, 255, 255, 0.1);
 }
+
+/* My Changes start here*/
+.search-bar{
+    color: black;
+    width: 300px;
+    height: 30px;
+    transform: translateY(-20px);
+    cursor: pointer;
+    padding-left: 5px;
+}
+
+.search-bar-div{
+    display: flex;
+    justify-content: end;
+}
+
+.search-bar::placeholder{
+    color: black;
+}
+
+/* My Changes end here */
