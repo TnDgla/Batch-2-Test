@@ -2,9 +2,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
         const response = await fetch("http://localhost:3001/data");
         const data = await response.json();
-        let filteredData = [...data]; // Keep original data separate
+        let filteredData = [...data];
         const leaderboardBody = document.getElementById('leaderboard-body');
         const sectionFilter = document.getElementById('section-filter');
+        const searchNameInput = document.getElementById('search-name');
 
         // Populate section filter dropdown
         const populateSectionFilter = () => {
@@ -20,7 +21,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Function to export data to CSV
         const exportToCSV = (data) => {
-            const headers = ['Rank', 'Roll Number', 'Name', 'Section', 'Total Solved', 'Easy', 'Medium', 'Hard', 'LeetCode URL'];
+            const headers = ['Rank', 'Roll Number', 'Name', 'Section', 'Total Solved', 'Easy', 'Medium', 'Hard', 'LeetCode Rank', 'LeetCode URL'];
             const csvRows = data.map((student, index) => {
                 return [
                     index + 1,
@@ -31,6 +32,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     student.easySolved || 'N/A',
                     student.mediumSolved || 'N/A',
                     student.hardSolved || 'N/A',
+                    student.leetCodeRank || 'N/A',
                     student.url
                 ].join(',');
             });
@@ -58,7 +60,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <td class="p-4">${student.roll}</td>
                     <td class="p-4">
                         ${student.url.startsWith('https://leetcode.com/u/') 
-                            ? `<a href="${student.url}" target="_blank" class="text-blue-400">${student.name}</a>`
+                            ? `<a href="${student.url}" target="_blank" class="text-blue-400">${student.name}</a>` 
                             : `<div class="text-red-500">${student.name}</div>`}
                     </td>
                     <td class="p-4">${student.section || 'N/A'}</td>
@@ -66,38 +68,21 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <td class="p-4 text-green-400">${student.easySolved || 'N/A'}</td>
                     <td class="p-4 text-yellow-400">${student.mediumSolved || 'N/A'}</td>
                     <td class="p-4 text-red-400">${student.hardSolved || 'N/A'}</td>
+                    <td class="p-4">${student.leetCodeRank || 'N/A'}</td>
                 `;
                 leaderboardBody.appendChild(row);
             });
         };
-
+  
         // Filter function
         const filterData = (section) => {
-            filteredData = section === 'all' 
-                ? [...data]
+            const sectionFilteredData = section === 'all' 
+                ? [...data] 
                 : data.filter(student => (student.section || 'N/A') === section);
+            
+            const searchQuery = searchNameInput.value.toLowerCase();
+            filteredData = sectionFilteredData.filter(student => student.name.toLowerCase().includes(searchQuery));
             renderLeaderboard(filteredData);
-        };
-
-        // Sorting logic with ascending and descending functionality
-        let totalSolvedDirection = 'desc';
-        let easySolvedDirection = 'desc';
-        let mediumSolvedDirection = 'desc';
-        let hardSolvedDirection = 'desc';
-        let sectionDirection = 'asc';
-
-        const sortData = (data, field, direction, isNumeric = false) => {
-            return data.sort((a, b) => {
-                const valA = a[field] || (isNumeric ? 0 : 'Z');
-                const valB = b[field] || (isNumeric ? 0 : 'Z');
-                if (isNumeric) {
-                    return direction === 'desc' ? valB - valA : valA - valB;
-                } else {
-                    return direction === 'desc'
-                        ? valB.toString().localeCompare(valA.toString())
-                        : valA.toString().localeCompare(valB.toString());
-                }
-            });
         };
 
         // Initialize the page
@@ -109,41 +94,45 @@ document.addEventListener('DOMContentLoaded', async () => {
             filterData(e.target.value);
         });
 
+        searchNameInput.addEventListener('input', () => {
+            filterData(sectionFilter.value);
+        });
+
         document.getElementById('export-btn').addEventListener('click', () => {
-            exportToCSV(filteredData); // Export only filtered data
-        });
-
-        document.getElementById('sort-section').addEventListener('click', () => {
-            sectionDirection = sectionDirection === 'desc' ? 'asc' : 'desc';
-            const sortedData = sortData(filteredData, 'section', sectionDirection, false);
-            renderLeaderboard(sortedData);
-        });
-
-        document.getElementById('sort-total').addEventListener('click', () => {
-            totalSolvedDirection = totalSolvedDirection === 'desc' ? 'asc' : 'desc';
-            const sortedData = sortData(filteredData, 'totalSolved', totalSolvedDirection, true);
-            renderLeaderboard(sortedData);
-        });
-
-        document.getElementById('sort-easy').addEventListener('click', () => {
-            easySolvedDirection = easySolvedDirection === 'desc' ? 'asc' : 'desc';
-            const sortedData = sortData(filteredData, 'easySolved', easySolvedDirection, true);
-            renderLeaderboard(sortedData);
-        });
-
-        document.getElementById('sort-medium').addEventListener('click', () => {
-            mediumSolvedDirection = mediumSolvedDirection === 'desc' ? 'asc' : 'desc';
-            const sortedData = sortData(filteredData, 'mediumSolved', mediumSolvedDirection, true);
-            renderLeaderboard(sortedData);
-        });
-
-        document.getElementById('sort-hard').addEventListener('click', () => {
-            hardSolvedDirection = hardSolvedDirection === 'desc' ? 'asc' : 'desc';
-            const sortedData = sortData(filteredData, 'hardSolved', hardSolvedDirection, true);
-            renderLeaderboard(sortedData);
+            exportToCSV(filteredData);
         });
 
     } catch (error) {
         console.error('Error fetching data:', error);
     }
+});
+const xValues = ["C", "D", "E", "F", "G","AC","AD","AE","A(H)"];
+const yValues = [78, 76, 75, 80, 78,35,40,50,55];
+const barColors = [
+  "#b91d47",
+  "#b91d45",
+  "#b91d30",
+  "#b91d46",
+  "#b91d30",
+  "#00aba9",
+  "#2b5700",
+  "#e8c3b9",
+  "#1e7145"
+];
+
+new Chart("myChart", {
+  type: "pie",
+  data: {
+    labels: xValues,
+    datasets: [{
+      backgroundColor: barColors,
+      data: yValues
+    }]
+  },
+  options: {
+    title: {
+      display: true,
+      text: "World Wide Wine Production 2018"
+    }
+  }
 });
