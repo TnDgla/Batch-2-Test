@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 sectionFilter.appendChild(option);
             });
         };
+        
 
         // Function to export data to CSV
         const exportToCSV = (data) => {
