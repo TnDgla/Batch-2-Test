@@ -147,3 +147,29 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error('Error fetching data:', error);
     }
 });
+const names = fs.readFileSync('name.txt', 'utf-8').split('\n').map(line => line.trim()).filter(Boolean);
+
+
+function search_name() {
+    let input = document.getElementById('searchbar').value
+    let x = document.getElementsByClassName('name');
+
+    for (i = 0; i < names.length; i++) {
+        if (names[i]==input) {
+            studentData = {
+                ...studentData,
+                username,
+                totalSolved: data[username].submitStatsGlobal.acSubmissionNum[0].count || 0,
+                easySolved: data[username].submitStatsGlobal.acSubmissionNum[1].count || 0,
+                mediumSolved: data[username].submitStatsGlobal.acSubmissionNum[2].count || 0,
+                hardSolved: data[username].submitStatsGlobal.acSubmissionNum[3].count || 0,
+              };
+            names[i].style.display = studentData;
+        }
+        else {
+            names[i].style.display = "None";
+        }
+    }
+}
+
+
