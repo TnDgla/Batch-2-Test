@@ -15,3 +15,15 @@ tr {
 tr:hover {
     background-color: rgba(255, 255, 255, 0.1);
 }
+button icon{
+    background-color: antiquewhite;
+    color: black;
+    border: 10px solid rgb(234, 234, 243);
+    padding: 10px;
+}
+.input{
+   border: 2px solid black;
+}
+#icon{
+   border: 2px solid white;
+}
