@@ -24,6 +24,14 @@
                         </button>
                     </div>
                 </div>
+                <div class="flex gap-4 items-center mb-4">
+                    <input
+                        type="text"
+                        id="search-bar"
+                        placeholder="Search by name..."
+                        class="bg-gray-700 text-white px-4 py-2 rounded w-full sm:w-1/2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                </div>
                 <table class="min-w-full bg-gray-900 rounded-lg overflow-hidden shadow-md">
                     <thead>
                         <tr class="bg-gray-700">
@@ -84,6 +92,37 @@
             </div>
         </div>
     </div>
+    
+    
+    <!-- <div class="my-10">
+        <h2 class="text-2xl font-bold text-center mb-4">Section-wise Distribution</h2>
+        <canvas id="sectionPieChart" class="mx-auto"></canvas>
+    </div> -->
+    <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
+
     <script src="index.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <script>
+        var xValues=["A(H)","AC","AD","AE","C","D","E","F","G","H"];
+        var yValues=[33,50,54,64,74,73,72,76,48,74];
+        var barColors=["#b91d47","#00aba9","#2b5797", "#e8c3b9", "#1e7145","#FF6384","#36A2EB","#FFCE56","#4CAF50","#F44336"];
+        new Chart("myChart", {
+           type: "pie",
+           data: {
+             labels: xValues,
+             datasets: [{
+             backgroundColor: barColors,
+             data: yValues
+             }]
+         },
+           options: {
+           title: {
+           display: true,
+           text: "Section wise pie chart"
+         }
+        }
+    });
+    </script>
 </body>
 </html>

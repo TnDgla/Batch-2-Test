@@ -147,3 +147,51 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error('Error fetching data:', error);
     }
 });
+
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const response = await fetch("http://localhost:3001/data");
+        const data = await response.json();
+        let filteredData = [...data];
+        const leaderboardBody = document.getElementById('leaderboard-body');
+        const searchBar = document.getElementById('search-bar');
+
+        // Function to render the leaderboard
+        const renderLeaderboard = (sortedData) => {
+            leaderboardBody.innerHTML = '';
+            sortedData.forEach((student, index) => {
+                const row = document.createElement('tr');
+                row.classList.add('border-b', 'border-gray-700');
+                row.innerHTML = `
+                    <td class="p-4">${index + 1}</td>
+                    <td class="p-4">${student.roll}</td>
+                    <td class="p-4">
+                        ${student.url.startsWith('https://leetcode.com/u/') 
+                            ? `<a href="${student.url}" target="_blank" class="text-blue-400">${student.name}</a>`
+                            : `<div class="text-red-500">${student.name}</div>`}
+                    </td>
+                    <td class="p-4">${student.section || 'N/A'}</td>
+                    <td class="p-4">${student.totalSolved || 'N/A'}</td>
+                    <td class="p-4 text-green-400">${student.easySolved || 'N/A'}</td>
+                    <td class="p-4 text-yellow-400">${student.mediumSolved || 'N/A'}</td>
+                    <td class="p-4 text-red-400">${student.hardSolved || 'N/A'}</td>
+                `;
+                leaderboardBody.appendChild(row);
+            });
+        };
+
+        searchBar.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            const searchResults = filteredData.filter(student =>
+                student.name.toLowerCase().includes(query)
+            );
+            renderLeaderboard(searchResults);
+        });
+
+        
+        renderLeaderboard(data);
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+});
+
