@@ -112,6 +112,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('export-btn').addEventListener('click', () => {
             exportToCSV(filteredData); // Export only filtered data
         });
+        // const searchInput=document.getElementById('src')
+        // const searchBtn=document.getElementById('btn')
+        const searchInput=document.getElementById('src');
+        const searchBtn=document.getElementById('btn')
+
+
+        searchBtn.addEventListener('click',()=>{
+            const ans=searchInput.value.toUpperCase();
+            filteredData=data.filter(student=>(student.name.includes(ans)));
+            renderLeaderboard(filteredData);
+        });
 
         document.getElementById('sort-section').addEventListener('click', () => {
             sectionDirection = sectionDirection === 'desc' ? 'asc' : 'desc';
