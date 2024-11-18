@@ -147,3 +147,22 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error('Error fetching data:', error);
     }
 });
+
+
+
+// const search = document.getElementById('search-input');
+// const searchBtn = document.getElementById('search-btn');
+
+// searchBtn.addEventListener('click', async () => {
+//     const value = search.value.toUpperCase();
+//     console.log(value);
+//     const response = await fetch("http://localhost:3001/data");
+//     const data = await response.json();
+//     console.log(data);
+//     for(let i=0;i<618;i++){
+//         const name = data[i].name;
+//         if(name == value){
+            
+//         }
+//     }
+// });
