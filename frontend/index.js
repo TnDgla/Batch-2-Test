@@ -2,11 +2,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
         const response = await fetch("http://localhost:3001/data");
         const data = await response.json();
-        let filteredData = [...data]; // Keep original data separate
+        let filteredData = [...data];
         const leaderboardBody = document.getElementById('leaderboard-body');
         const sectionFilter = document.getElementById('section-filter');
+        const searchInput = document.getElementById('search');
+        const searchbtn = document.getElementById('button');
 
-        // Populate section filter dropdown
         const populateSectionFilter = () => {
             const sections = [...new Set(data.map(student => student.section || 'N/A'))].sort();
             sectionFilter.innerHTML = '<option value="all">All Sections</option>';
@@ -18,23 +19,25 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         };
 
-        // Function to export data to CSV
+        searchbtn.addEventListener('click', () => {
+            const target = searchInput.value.toUpperCase();
+            filteredData = data.filter(student => student.name.toUpperCase().startsWith(target));
+            renderLeaderboard(filteredData);
+        });
+
         const exportToCSV = (data) => {
             const headers = ['Rank', 'Roll Number', 'Name', 'Section', 'Total Solved', 'Easy', 'Medium', 'Hard', 'LeetCode URL'];
-            const csvRows = data.map((student, index) => {
-                return [
-                    index + 1,
-                    student.roll,
-                    student.name,
-                    student.section || 'N/A',
-                    student.totalSolved || 'N/A',
-                    student.easySolved || 'N/A',
-                    student.mediumSolved || 'N/A',
-                    student.hardSolved || 'N/A',
-                    student.url
-                ].join(',');
-            });
-            
+            const csvRows = data.map((student, index) => [
+                index + 1,
+                student.roll,
+                student.name,
+                student.section || 'N/A',
+                student.totalSolved || 'N/A',
+                student.easySolved || 'N/A',
+                student.mediumSolved || 'N/A',
+                student.hardSolved || 'N/A',
+                student.url
+            ].join(','));
             const csvContent = [headers.join(','), ...csvRows].join('\n');
             const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement('a');
@@ -47,7 +50,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             document.body.removeChild(link);
         };
 
-        // Function to render the leaderboard
         const renderLeaderboard = (sortedData) => {
             leaderboardBody.innerHTML = '';
             sortedData.forEach((student, index) => {
@@ -71,7 +73,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         };
 
-        // Filter function
         const filterData = (section) => {
             filteredData = section === 'all' 
                 ? [...data]
@@ -79,7 +80,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             renderLeaderboard(filteredData);
         };
 
-        // Sorting logic with ascending and descending functionality
         let totalSolvedDirection = 'desc';
         let easySolvedDirection = 'desc';
         let mediumSolvedDirection = 'desc';
@@ -100,17 +100,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         };
 
-        // Initialize the page
         populateSectionFilter();
         renderLeaderboard(data);
 
-        // Event Listeners
         sectionFilter.addEventListener('change', (e) => {
             filterData(e.target.value);
         });
 
         document.getElementById('export-btn').addEventListener('click', () => {
-            exportToCSV(filteredData); // Export only filtered data
+            exportToCSV(filteredData);
         });
 
         document.getElementById('sort-section').addEventListener('click', () => {
