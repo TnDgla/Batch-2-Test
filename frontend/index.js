@@ -100,14 +100,28 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         };
 
+        // My Work
+        const filterByName = () =>{
+            var x = document.getElementById('search-space');
+            filteredDataByName = x.value==''
+                ?[...data]
+                : data.filter(student => ((student.name.substring(0,x.value.length))===x.value.toUpperCase()));
+            renderLeaderboard(filteredDataByName);
+        }
+
         // Initialize the page
         populateSectionFilter();
         renderLeaderboard(data);
 
         // Event Listeners
+
+        document.getElementById('search-space').addEventListener('search',filterByName)
+
+
         sectionFilter.addEventListener('change', (e) => {
             filterData(e.target.value);
         });
+
 
         document.getElementById('export-btn').addEventListener('click', () => {
             exportToCSV(filteredData); // Export only filtered data
