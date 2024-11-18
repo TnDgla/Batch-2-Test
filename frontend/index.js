@@ -103,10 +103,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         // My Work
         const filterByName = () =>{
             var x = document.getElementById('search-space');
-            filterDataByName = x.value==''
+            filteredDataByName = x.value==''
                 ?[...data]
                 : data.filter(student => ((student.name.substring(0,x.value.length))===x.value.toUpperCase()));
-            renderLeaderboard(filterDataByName);
+            renderLeaderboard(filteredDataByName);
         }
 
         // Initialize the page
