@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     student.url
                 ].join(',');
             });
-            
+
             const csvContent = [headers.join(','), ...csvRows].join('\n');
             const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement('a');
@@ -57,9 +57,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <td class="p-4">${index + 1}</td>
                     <td class="p-4">${student.roll}</td>
                     <td class="p-4">
-                        ${student.url.startsWith('https://leetcode.com/u/') 
-                            ? `<a href="${student.url}" target="_blank" class="text-blue-400">${student.name}</a>`
-                            : `<div class="text-red-500">${student.name}</div>`}
+                        ${student.url.startsWith('https://leetcode.com/u/')
+                        ? `<a href="${student.url}" target="_blank" class="text-blue-400">${student.name}</a>`
+                        : `<div class="text-red-500">${student.name}</div>`}
                     </td>
                     <td class="p-4">${student.section || 'N/A'}</td>
                     <td class="p-4">${student.totalSolved || 'N/A'}</td>
@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Filter function
         const filterData = (section) => {
-            filteredData = section === 'all' 
+            filteredData = section === 'all'
                 ? [...data]
                 : data.filter(student => (student.section || 'N/A') === section);
             renderLeaderboard(filteredData);
@@ -143,7 +143,60 @@ document.addEventListener('DOMContentLoaded', async () => {
             renderLeaderboard(sortedData);
         });
 
+        document.getElementById('Search').addEventListener('input', (e) => {
+            const searchValue = e.target.value.toLowerCase();
+            const filteredData = data.filter((item) => item.name.toLowerCase().includes(searchValue));
+            renderLeaderboard(filteredData);
+        });
+        function gettingValues(section){
+            const sectionData=data.filter(student => student.section === section);
+            let easy=0;
+            let mid=0;
+            let hard=0;
+            // console.log(typeof(sectionData[0].easySolved))
+            for(let i=0;i<sectionData.length;i++){
+                if(typeof(sectionData[i].easySolved)=="number")
+                    easy=easy+sectionData[i].easySolved;
+                if(typeof(sectionData[i].mediumSolved)=="number")
+                    mid=mid+sectionData[i].mediumSolved;
+                if(typeof(sectionData[i].hardSolved)=="number")
+                    hard=hard+sectionData[i].hardSolved;
+            }
+            // console.log(easy+"   "+mid+"   "+hard);
+            return [easy,mid,hard];
+        }
+        const sectionS=["A(H)","AC","AD","AE","C","D","E","F","G","H"];
+        for(let i=0;i<sectionS.length;i++){
+            const yValues=gettingValues(sectionS[i]);
+            pieChart(sectionS[i],yValues);
+        }
+
     } catch (error) {
         console.error('Error fetching data:', error);
     }
 });
+function pieChart(chart, yValues) {
+    const barColors=[
+        "#b91d47",
+        "#00aba9",
+        "#2b5797"
+    ]
+    const xValues=["Easy","Medium","Hard"]
+    const charts = document.getElementById("")
+    new Chart(chart, {
+        type: "pie",
+        data: {
+            labels: xValues,
+            datasets: [{
+                backgroundColor: barColors,
+                data: yValues
+            }]
+        },
+        options: {
+            title: {
+                display: true,
+                text: chart
+            }
+        }
+    });
+}
