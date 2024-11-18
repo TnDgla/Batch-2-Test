@@ -146,4 +146,80 @@ document.addEventListener('DOMContentLoaded', async () => {
     } catch (error) {
         console.error('Error fetching data:', error);
     }
+    // Function to filter leaderboard based on search input
+function filterLeaderboard() {
+    const searchInput = document.getElementById('search-bar').value.toLowerCase();
+    const tableRows = document.querySelectorAll('#leaderboard-body tr');
+
+    tableRows.forEach(row => {
+        const nameCell = row.querySelector('td:nth-child(3)');
+        if (nameCell) {
+            const name = nameCell.textContent.toLowerCase();
+            if (name.includes(searchInput)) {
+                row.style.display = ''; 
+            } else {
+                row.style.display = 'none';
+            }
+        }
+    });
+}
+
+
+document.getElementById('search-bar').addEventListener('input', filterLeaderboard);
+let ctx = document.getElementById('pieChart')
+            .getContext('2d');
+        let dataValue = {
+            labels: ['C',
+                'D',
+                'E',
+                'F',
+                'G',
+                'H',
+                'A(H)',
+                'AC','AD','AE'],
+            datasets: [{
+                data: [74, 73, 72, 76, 48,74,33,50,54,64],
+                backgroundColor: ['rgba(255, 99, 132, 0.8)',
+                    'rgba(75, 192, 192, 0.8)',
+                    'rgba(54, 162, 235, 0.8)',
+                    'rgba(255, 205, 86, 0.8)',
+                    'rgba(153, 102, 255, 0.8)',
+                    'rgba(280, 192, 192, 0.8)',
+                    'rgba(15, 19, 194, 0.8)',
+                    'rgba(89, 12, 112, 0.8)',
+                    'rgba(42, 137, 12, 0.8)',
+                    'rgba(189, 172, 152, 0.8)'
+                    ],
+                borderWidth: 2 
+            }]
+        }
+       
+        let pieChart = new Chart(ctx, {
+            // Specify the chart type
+            type: 'pie',
+            // Provide data for the chart
+            data: dataValue,
+            // Additional options for the chart
+            options: {
+                responsive: true, // It make the chart responsive
+                // This plugin will display Title of chart
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Number of Students Enrolled Course'
+                    }
+                },
+                // Event handler for a click on a chart element
+                onClick: function (event, elements) {
+                    const clickedElement = elements[0];
+                    const datasetIndex = clickedElement.index;
+                    const label = dataValue.labels[datasetIndex];
+                    const labelValue = dataValue.datasets[0].data[datasetIndex];
+
+                    t
+                    alert(`Clicked on: ${label} and it's value is ${labelValue}`);
+                }
+            }
+        });
+
 });
