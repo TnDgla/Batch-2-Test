@@ -15,3 +15,10 @@ tr {
 tr:hover {
     background-color: rgba(255, 255, 255, 0.1);
 }
+.search{
+    border: 2px solid blue;
+}
+.btn{
+    border-radius: 4px;
+    background-color: 2px solid red;
+}

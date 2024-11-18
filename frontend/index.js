@@ -142,8 +142,21 @@ document.addEventListener('DOMContentLoaded', async () => {
             const sortedData = sortData(filteredData, 'hardSolved', hardSolvedDirection, true);
             renderLeaderboard(sortedData);
         });
+        const search=document.getElementById('Searching');
+        search.addEventListener('input',(e)=>{
+        let search_data=[];
+         let inp_val=e.target.value;
+
+         for(let ss of data){
+            if(ss.name.substring(0,inp_val.length)==inp_val.toUpperCase()){
+                search_data.push(ss)
+        }
+    }    
+     renderLeaderboard(search_data);
+});
 
     } catch (error) {
         console.error('Error fetching data:', error);
     }
+    
 });
