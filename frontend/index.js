@@ -100,12 +100,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         };
 
+        // My Work
         const filterByName = () =>{
-            //It will work if u search full name
             var x = document.getElementById('search-space');
             filterDataByName = x.value==''
                 ?[...data]
-                : data.filter(student => ((student.name)===x.value.toUpperCase()));
+                : data.filter(student => ((student.name.substring(0,x.value.length))===x.value.toUpperCase()));
             renderLeaderboard(filterDataByName);
         }
 
