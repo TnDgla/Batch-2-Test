@@ -1,3 +1,4 @@
+// Search implementation
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         const response = await fetch("http://localhost:3001/data");
@@ -5,6 +6,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         let filteredData = [...data]; // Keep original data separate
         const leaderboardBody = document.getElementById('leaderboard-body');
         const sectionFilter = document.getElementById('section-filter');
+        const searchInput = document.getElementById('srch'); // Reference to the search input
 
         // Populate section filter dropdown
         const populateSectionFilter = () => {
@@ -16,35 +18,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 option.textContent = section;
                 sectionFilter.appendChild(option);
             });
-        };
-
-        // Function to export data to CSV
-        const exportToCSV = (data) => {
-            const headers = ['Rank', 'Roll Number', 'Name', 'Section', 'Total Solved', 'Easy', 'Medium', 'Hard', 'LeetCode URL'];
-            const csvRows = data.map((student, index) => {
-                return [
-                    index + 1,
-                    student.roll,
-                    student.name,
-                    student.section || 'N/A',
-                    student.totalSolved || 'N/A',
-                    student.easySolved || 'N/A',
-                    student.mediumSolved || 'N/A',
-                    student.hardSolved || 'N/A',
-                    student.url
-                ].join(',');
-            });
-            
-            const csvContent = [headers.join(','), ...csvRows].join('\n');
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a');
-            const url = URL.createObjectURL(blob);
-            link.setAttribute('href', url);
-            link.setAttribute('download', 'leaderboard.csv');
-            link.style.display = 'none';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
         };
 
         // Function to render the leaderboard
@@ -71,79 +44,47 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         };
 
-        // Filter function
-        const filterData = (section) => {
-            filteredData = section === 'all' 
-                ? [...data]
-                : data.filter(student => (student.section || 'N/A') === section);
-            renderLeaderboard(filteredData);
+        // Function to filter data by name
+        const filterDataByName = (query) => {
+            const filteredByName = filteredData.filter(student => 
+                student.name.toLowerCase().includes(query.toLowerCase())
+            );
+            renderLeaderboard(filteredByName);
         };
 
-        // Sorting logic with ascending and descending functionality
-        let totalSolvedDirection = 'desc';
-        let easySolvedDirection = 'desc';
-        let mediumSolvedDirection = 'desc';
-        let hardSolvedDirection = 'desc';
-        let sectionDirection = 'asc';
-
-        const sortData = (data, field, direction, isNumeric = false) => {
-            return data.sort((a, b) => {
-                const valA = a[field] || (isNumeric ? 0 : 'Z');
-                const valB = b[field] || (isNumeric ? 0 : 'Z');
-                if (isNumeric) {
-                    return direction === 'desc' ? valB - valA : valA - valB;
-                } else {
-                    return direction === 'desc'
-                        ? valB.toString().localeCompare(valA.toString())
-                        : valA.toString().localeCompare(valB.toString());
-                }
-            });
+        // Filter function for section
+        const filterDataBySection = (section) => {
+            const filteredBySection = section === 'all' 
+                ? [...filteredData] 
+                : filteredData.filter(student => (student.section || 'N/A') === section);
+            renderLeaderboard(filteredBySection);
         };
 
         // Initialize the page
         populateSectionFilter();
-        renderLeaderboard(data);
+        renderLeaderboard(filteredData);
 
         // Event Listeners
+        searchInput.addEventListener('input', debounce((e) => {
+            const query = e.target.value.trim();
+            filterDataByName(query); // Filter data based on name
+        }, 300)); // Debounce time of 300ms
+
         sectionFilter.addEventListener('change', (e) => {
-            filterData(e.target.value);
-        });
-
-        document.getElementById('export-btn').addEventListener('click', () => {
-            exportToCSV(filteredData); // Export only filtered data
-        });
-
-        document.getElementById('sort-section').addEventListener('click', () => {
-            sectionDirection = sectionDirection === 'desc' ? 'asc' : 'desc';
-            const sortedData = sortData(filteredData, 'section', sectionDirection, false);
-            renderLeaderboard(sortedData);
-        });
-
-        document.getElementById('sort-total').addEventListener('click', () => {
-            totalSolvedDirection = totalSolvedDirection === 'desc' ? 'asc' : 'desc';
-            const sortedData = sortData(filteredData, 'totalSolved', totalSolvedDirection, true);
-            renderLeaderboard(sortedData);
-        });
-
-        document.getElementById('sort-easy').addEventListener('click', () => {
-            easySolvedDirection = easySolvedDirection === 'desc' ? 'asc' : 'desc';
-            const sortedData = sortData(filteredData, 'easySolved', easySolvedDirection, true);
-            renderLeaderboard(sortedData);
-        });
-
-        document.getElementById('sort-medium').addEventListener('click', () => {
-            mediumSolvedDirection = mediumSolvedDirection === 'desc' ? 'asc' : 'desc';
-            const sortedData = sortData(filteredData, 'mediumSolved', mediumSolvedDirection, true);
-            renderLeaderboard(sortedData);
-        });
-
-        document.getElementById('sort-hard').addEventListener('click', () => {
-            hardSolvedDirection = hardSolvedDirection === 'desc' ? 'asc' : 'desc';
-            const sortedData = sortData(filteredData, 'hardSolved', hardSolvedDirection, true);
-            renderLeaderboard(sortedData);
+            const section = e.target.value;
+            filterDataBySection(section); // Filter data based on section
         });
 
     } catch (error) {
         console.error('Error fetching data:', error);
     }
 });
+
+// Debounce function to limit the frequency of search input events
+function debounce(func, wait) {
+    let timeout;
+    return function (...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), wait);
+    };
+}

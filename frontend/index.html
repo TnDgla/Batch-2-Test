@@ -5,24 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
     <title>LeetCode Leaderboard</title>
 </head>
 <body class="bg-gray-900 text-white p-5">
     <div class="container mx-auto my-10">
+
+        <!-- Section-wise Pie Chart -->
+        <div id="chart-container" class="bg-gray-800 rounded-lg shadow-md p-6 mb-10">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold">Section-wise Distribution</h2>
+                <button id="toggle-chart-btn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+                    Hide Chart
+                </button>
+            </div>
+            <canvas id="sectionChart" width="400" height="400"></canvas>
+        </div>
+
+        <!-- Leaderboard -->
         <div class="">
-            <!-- Leaderboard -->
             <div class="col-span-2 bg-gray-800 rounded-lg shadow-md p-6 overflow-x-auto">
                 <div class="flex justify-between items-center mb-6">
                     <h1 class="text-4xl font-bold">TBPPP Leaderboard</h1>
                     <div class="flex gap-4 items-center">
                         <select id="section-filter" class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <option value="all">All Sections</option>
-                            <!-- Options will be dynamically added -->
                         </select>
                         <button id="export-btn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded flex items-center transition duration-150 ease-in-out">
                             <i class="fas fa-download mr-2"></i> Export to CSV
                         </button>
                     </div>
+                </div>
+
+                <!-- Search -->
+                <div>
+                    <input type="search" name="" id="srch" placeholder="Search 🔍" style="color: black;width: 150px;border: none;left: 55px;">
                 </div>
                 <table class="min-w-full bg-gray-900 rounded-lg overflow-hidden shadow-md">
                     <thead>
@@ -66,24 +83,64 @@
                         <!-- Data will be dynamically added here -->
                     </tbody>
                 </table>
-
-                <!-- Loading State -->
-                <div id="loading-state" class="hidden">
-                    <div class="flex justify-center items-center p-8">
-                        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
-                    </div>
-                </div>
-
-                <!-- Error State -->
-                <div id="error-state" class="hidden">
-                    <div class="text-center p-8 text-red-500">
-                        <i class="fas fa-exclamation-circle text-2xl mb-2"></i>
-                        <p>Error loading data. Please try again later.</p>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- JavaScript -->
     <script src="index.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // Section-wise data for the chart
+                const sectionData = {
+                    labels: ['A(h)', 'AC', 'AD', 'AE', 'C', 'D', 'E', 'F', 'G', 'H'],
+                    datasets: [{
+                        label: 'Students in Each Section',
+                        data: [33, 50, 54, 64, 74, 73, 72, 76, 48, 74],
+                        backgroundColor: [
+                            '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0',
+                            '#9966FF', '#FF9F40', '#FFCD42', '#59C3C3',
+                            '#9CCC65', '#F06292'
+                        ],
+                        hoverOffset: 4
+                    }]
+                };
+
+                // Chart options
+                const sectionOptions = {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: { color: '#ffffff' }
+                        }
+                    }
+                };
+
+                // Render the pie chart
+                const ctx = document.getElementById('sectionChart').getContext('2d');
+                const sectionChart = new Chart(ctx, {
+                    type: 'pie',
+                    data: sectionData,
+                    options: sectionOptions
+                });
+
+                // Toggle chart visibility
+                const toggleChartBtn = document.getElementById('toggle-chart-btn');
+                const chartContainer = document.getElementById('chart-container');
+
+                toggleChartBtn.addEventListener('click', () => {
+                    const isHidden = chartContainer.classList.toggle('hidden');
+                    toggleChartBtn.textContent = isHidden ? 'Show Chart' : 'Hide Chart';
+                });
+
+            } catch (error) {
+                console.error('Error rendering chart:', error);
+            }
+        });
+    </script>
 </body>
 </html>
