@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     student.url
                 ].join(',');
             });
-            
+
             const csvContent = [headers.join(','), ...csvRows].join('\n');
             const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement('a');
@@ -57,9 +57,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <td class="p-4">${index + 1}</td>
                     <td class="p-4">${student.roll}</td>
                     <td class="p-4">
-                        ${student.url.startsWith('https://leetcode.com/u/') 
-                            ? `<a href="${student.url}" target="_blank" class="text-blue-400">${student.name}</a>`
-                            : `<div class="text-red-500">${student.name}</div>`}
+                        ${student.url.startsWith('https://leetcode.com/u/')
+                        ? `<a href="${student.url}" target="_blank" class="text-blue-400">${student.name}</a>`
+                        : `<div class="text-red-500">${student.name}</div>`}
                     </td>
                     <td class="p-4">${student.section || 'N/A'}</td>
                     <td class="p-4">${student.totalSolved || 'N/A'}</td>
@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Filter function
         const filterData = (section) => {
-            filteredData = section === 'all' 
+            filteredData = section === 'all'
                 ? [...data]
                 : data.filter(student => (student.section || 'N/A') === section);
             renderLeaderboard(filteredData);
@@ -142,11 +142,48 @@ document.addEventListener('DOMContentLoaded', async () => {
             const sortedData = sortData(filteredData, 'hardSolved', hardSolvedDirection, true);
             renderLeaderboard(sortedData);
         });
-        document.getElementById('Searchedbutton').addEventListener('click',()=>{
-            //console.log(filteredData)
+        document.getElementById('Searchedbutton').addEventListener('click', () => {
             const SearchedText = document.getElementById('Search').value
             const searchedData = filteredData.filter((data) => data.name === SearchedText)
             renderLeaderboard(searchedData);
+        })
+
+        document.getElementById('pie').addEventListener('click', () => {
+            const countMap = new Map();
+            filteredData.forEach(item=> {
+                if (countMap.has(item.section)) {
+                    countMap.set(item.section, countMap.get(item.section) + 1);
+                } else {
+                    countMap.set(item.section, 1);
+                }
+            });
+            let keys = Object.keys(countMap)
+            let values = Object.values(countMap)
+            const child = document.getElementById('piec')
+            const canvas = document.createElement('canvas')
+            canvas.id = 'pieChart'
+            const ctx = canvas.getContext('2d');
+            const myChart = new Chart(ctx, {
+
+                type: 'pie',
+         
+                data: {
+         
+                    labels: keys,
+         
+                    datasets: [{
+         
+                        label: '# of Votes',
+         
+                        data: values,
+         
+                        backgroundColor: ['red', 'blue', 'green', 'yellow','orange','purple','grey','white','indigo','voilet'],
+         
+                    }]
+                },
+            });         
+            canvas.innerHTML = myChart
+            child.appendChild(canvas)
         })
 
     } catch (error) {
