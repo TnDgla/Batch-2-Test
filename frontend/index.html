@@ -5,8 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.14/dist/full.min.css" rel="stylesheet" type="text/css" />
     <title>LeetCode Leaderboard</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 <body class="bg-gray-900 text-white p-5">
     <div class="container mx-auto my-10">
         <div class="">
@@ -15,10 +18,15 @@
                 <div class="flex justify-between items-center mb-6">
                     <h1 class="text-4xl font-bold">TBPPP Leaderboard</h1>
                     <div class="flex gap-4 items-center">
+
+                        <input type="text" placeholder="Type here" class="input input-bordered w-full max-w-xs" id="search-input"><button class="btn" id="search-btn">Search</button></input> 
+
+
                         <select id="section-filter" class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <option value="all">All Sections</option>
                             <!-- Options will be dynamically added -->
                         </select>
+                       
                         <button id="export-btn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded flex items-center transition duration-150 ease-in-out">
                             <i class="fas fa-download mr-2"></i> Export to CSV
                         </button>
@@ -84,6 +92,37 @@
             </div>
         </div>
     </div>
+    <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
     <script src="index.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    
+<script>
+    var xValues = ["Section-E", "Section-A", "Section-AC"];
+    var yValues = [55, 20,25];
+    var barColors = [
+      "#b91d47",
+      "#00aba9",
+      "#2b5797",
+      
+    ];
+    
+    new Chart("myChart", {
+      type: "pie",
+      data: {
+        labels: xValues,
+        datasets: [{
+          backgroundColor: barColors,
+          data: yValues
+        }]
+      },
+      options: {
+        title: {
+          display: true,
+          text: "Participants"
+        }
+      }
+    });
+    </script>
 </body>
 </html>
