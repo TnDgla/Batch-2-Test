@@ -6,6 +6,39 @@ document.addEventListener('DOMContentLoaded', async () => {
         const leaderboardBody = document.getElementById('leaderboard-body');
         const sectionFilter = document.getElementById('section-filter');
 
+        const search=document.getElementById("search_bar");
+        const serachButton=document.getElementById("searchButton");
+        serachButton.addEventListener('click', () => {
+            sectionDirection = sectionDirection === 'desc' ? 'asc' : 'desc';
+            const sortedData = sortData(filteredData, 'section', sectionDirection, false);
+            allData=sortedData;
+            renderLeaderboardSearch(sortedData);
+        });
+        const renderLeaderboardSearch=(sortedData)=>{
+            leaderboardBody.innerHTML = '';
+            const searchedName=search.value.toLowerCase();//value passed in search
+            sortedData.forEach((student, index) => {
+                const row = document.createElement('tr');
+                row.classList.add('border-b', 'border-gray-700');
+                if((student.name.toLowerCase()).startsWith(searchedName)){
+                row.innerHTML = `
+                    <td class="p-4">${index + 1}</td>
+                    <td class="p-4">${student.roll}</td>
+                    <td class="p-4">
+                        ${student.url.startsWith('https://leetcode.com/u/') 
+                            ? `<a href="${student.url}" target="_blank" class="text-blue-400">${student.name}</a>`
+                            : `<div class="text-red-500">${student.name}</div>`}
+                    </td>
+                    <td class="p-4">${student.section || 'N/A'}</td>
+                    <td class="p-4">${student.totalSolved || 'N/A'}</td>
+                    <td class="p-4 text-green-400">${student.easySolved || 'N/A'}</td>
+                    <td class="p-4 text-yellow-400">${student.mediumSolved || 'N/A'}</td>
+                    <td class="p-4 text-red-400">${student.hardSolved || 'N/A'}</td>
+                `;
+                leaderboardBody.appendChild(row);}
+            });
+        }
+
         // Populate section filter dropdown
         const populateSectionFilter = () => {
             const sections = [...new Set(data.map(student => student.section || 'N/A'))].sort();
