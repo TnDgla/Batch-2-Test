@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <title>LeetCode Leaderboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body class="bg-gray-900 text-white p-5">
     <div class="container mx-auto my-10">
@@ -15,6 +17,17 @@
                 <div class="flex justify-between items-center mb-6">
                     <h1 class="text-4xl font-bold">TBPPP Leaderboard</h1>
                     <div class="flex gap-4 items-center">
+                    <input
+                        type="text"
+                        id="search-bar"
+                        placeholder="Search Here"
+                        class="searchbar"
+                        style="height: 38px;
+                        border-radius: 5px;
+                        background-color: rgba(0, 0, 0, 0.5);
+                        padding-left: 75px;
+                        border: 2px solid white;"/>
+                         <button type="submit"><i class="fa fa-search"></i></button>
                         <select id="section-filter" class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <option value="all">All Sections</option>
                             <!-- Options will be dynamically added -->
@@ -24,6 +37,7 @@
                         </button>
                     </div>
                 </div>
+             
                 <table class="min-w-full bg-gray-900 rounded-lg overflow-hidden shadow-md">
                     <thead>
                         <tr class="bg-gray-700">
@@ -66,7 +80,7 @@
                         <!-- Data will be dynamically added here -->
                     </tbody>
                 </table>
-
+                <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
                 <!-- Loading State -->
                 <div id="loading-state" class="hidden">
                     <div class="flex justify-center items-center p-8">
@@ -86,4 +100,8 @@
     </div>
     <script src="index.js"></script>
 </body>
+<script
+src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+</script>
 </html>
+
