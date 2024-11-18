@@ -15,3 +15,12 @@ tr {
 tr:hover {
     background-color: rgba(255, 255, 255, 0.1);
 }
+#search-input{
+    width: 400px;
+    height: 45px;
+    color: black;
+    border: 2px solid #3e4b5f;
+    border-radius: 7px;
+    background-color: #3e4b5f;
+
+}

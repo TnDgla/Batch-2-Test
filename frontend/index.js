@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         const response = await fetch("http://localhost:3001/data");
@@ -147,3 +148,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error('Error fetching data:', error);
     }
 });
+  
+
+let jsonData   = JSON.parse(data);
+
+function filter_data(input){
+    let filtered_data = [];
+    for(let i=0;i<jsonData.length;i++){
+        if(jsonData[i].name.toLowerCase().includes(input)){
+            filtered_data.push(jsonData[i]);
+        }
+    }
+    return filtered_data;
+}
+// create a pia chart that visually represents the distribution of participants by sections
