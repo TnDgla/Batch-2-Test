@@ -47,6 +47,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             document.body.removeChild(link);
         };
 
+
+
         // Function to render the leaderboard
         const renderLeaderboard = (sortedData) => {
             leaderboardBody.innerHTML = '';
@@ -70,7 +72,23 @@ document.addEventListener('DOMContentLoaded', async () => {
                 leaderboardBody.appendChild(row);
             });
         };
-
+        
+        document.getElementById('search-bar').addEventListener('input', function (e) {
+            const s = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('#leaderboard-body tr');
+        
+            rows.forEach(row => {
+                const name = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+                if (name.includes(s)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+        
+   
+    
         // Filter function
         const filterData = (section) => {
             filteredData = section === 'all' 
@@ -99,6 +117,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             });
         };
+
+
+        
 
         // Initialize the page
         populateSectionFilter();
