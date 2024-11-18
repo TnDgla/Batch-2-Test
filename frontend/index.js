@@ -142,6 +142,50 @@ document.addEventListener('DOMContentLoaded', async () => {
             const sortedData = sortData(filteredData, 'hardSolved', hardSolvedDirection, true);
             renderLeaderboard(sortedData);
         });
+        
+
+
+        // Search Feature Added Here
+        const sri=document.getElementById('sri');
+        const srb=document.getElementById('srb');
+
+        srb.addEventListener('click', () => {
+            let str=sri.value;
+            let ns=str.toUpperCase();
+            const newData=data.filter(student => student.name.startsWith(ns))
+            renderLeaderboard(newData);
+        })
+
+
+
+        //3rd Innovative Task to switch from dark mode to light
+        const dbtn=document.getElementById('dbtn');
+        const lbtn=document.getElementById('lbtn');
+
+        lbtn.addEventListener('click', () => {
+            document.getElementById('b').style.background="rgb(218, 227, 235)";
+            document.getElementById('d').style.background="rgb(218, 227, 235)";
+            document.getElementById('l').style.background="rgb(218, 227, 235)";
+            document.getElementById('b').style.color="black";
+            document.getElementById('d').style.color="black";
+            document.getElementById('l').style.color="black";
+            srb.style.color="white";
+            dbtn.style.color="white";
+            sri.style.borderColor="black"
+        })
+
+        dbtn.addEventListener('click', () => {
+            document.getElementById('b').style.background="rgb(17, 24, 39)";
+            document.getElementById('d').style.background="rgb(31, 41, 55)";
+            document.getElementById('l').style.background="rgb(17, 24, 39)";
+            document.getElementById('b').style.color="white";
+            document.getElementById('d').style.color="white";
+            document.getElementById('l').style.color="white";
+            dbtn.style.color="white";
+            sri.style.borderColor="white"
+        })
+
+
 
     } catch (error) {
         console.error('Error fetching data:', error);
