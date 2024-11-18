@@ -70,7 +70,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 leaderboardBody.appendChild(row);
             });
         };
-
         // Filter function
         const filterData = (section) => {
             filteredData = section === 'all' 
@@ -79,6 +78,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             renderLeaderboard(filteredData);
         };
 
+        
         // Sorting logic with ascending and descending functionality
         let totalSolvedDirection = 'desc';
         let easySolvedDirection = 'desc';
@@ -99,9 +99,49 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             });
         };
+        document.getElementById('search-input').addEventListener('input',(e)=>{
+            const searchValue = e.target.value.toLowerCase();
+            const filteredData = data.filter(student => student.name.toLowerCase().includes(searchValue));
+            renderLeaderboard(filteredData);
+        })
+       
 
         // Initialize the page
         populateSectionFilter();
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         renderLeaderboard(data);
 
         // Event Listeners
