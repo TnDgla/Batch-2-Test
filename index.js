@@ -1,91 +1,84 @@
-const express = require('express');
 const fs = require('fs');
-const cors = require('cors');
 const axios = require('axios');
-const app = express();
-const port = 3001;
-
-app.use(cors());
 
 async function fetchAndSaveData() {
-  try {
-    console.log('Starting to read input files...');
-    const rolls = fs.readFileSync('roll.txt', 'utf-8').split('\n').map(line => line.trim()).filter(Boolean);
-    const names = fs.readFileSync('name.txt', 'utf-8').split('\n').map(line => line.trim()).filter(Boolean);
-    const urls = fs.readFileSync('urls.txt', 'utf-8').split('\n').map(line => line.trim()).filter(Boolean);
-    const sections = fs.readFileSync('sections.txt', 'utf-8').split('\n').map(line => line.trim()).filter(Boolean);
+    try {
+        console.log('Starting to fetch data...');
+        const rolls = fs.readFileSync('roll.txt', 'utf-8').split('\n').map(line => line.trim()).filter(Boolean);
+        const names = fs.readFileSync('name.txt', 'utf-8').split('\n').map(line => line.trim()).filter(Boolean);
+        const urls = fs.readFileSync('urls.txt', 'utf-8').split('\n').map(line => line.trim()).filter(Boolean);
+        const sections = fs.readFileSync('sections.txt', 'utf-8').split('\n').map(line => line.trim()).filter(Boolean);
 
-    if (rolls.length !== names.length || names.length !== urls.length || names.length !== sections.length) {
-      console.error('Error: The number of rolls, names, URLs, and sections do not match.');
-      return;
-    }
-
-    console.log('Input files read successfully.');
-    const combinedData = [];
-
-    for (let i = 0; i < rolls.length; i++) {
-      const roll = rolls[i];
-      const name = names[i];
-      const url = urls[i];
-      const section = sections[i];
-      let studentData = { roll, name, url, section };
-
-      console.log(`Processing data for roll number: ${roll}, name: ${name}, section: ${section}`);
-
-      // Check if URL is a LeetCode URL
-      if (url.startsWith('https://leetcode.com/u/')) {
-        var username = url.split('/u/')[1];
-        if(username.charAt(username.length-1) == '/') username = username.substring(0, username.length-1);
-        console.log(`Fetching data for LeetCode username: ${username}`);
-
-        try {
-          const response = await axios.get(`https://leetcodeapi-v1.vercel.app/${username}`);
-          const data = response.data;
-          if (data && data[username]) {
-            studentData = {
-              ...studentData,
-              username,
-              totalSolved: data[username].submitStatsGlobal.acSubmissionNum[0].count || 0,
-              easySolved: data[username].submitStatsGlobal.acSubmissionNum[1].count || 0,
-              mediumSolved: data[username].submitStatsGlobal.acSubmissionNum[2].count || 0,
-              hardSolved: data[username].submitStatsGlobal.acSubmissionNum[3].count || 0,
-            };
-            console.log(`Data for ${username} fetched and processed successfully.`);
-          } else {
-            console.log(`No data found for ${username}`);
-          }
-        } catch (error) {
-          console.error(`Error fetching data for ${username}:`, error);
+        if (rolls.length !== names.length || names.length !== urls.length || names.length !== sections.length) {
+            console.error('Error: The number of rolls, names, URLs, and sections do not match.');
+            return;
         }
-      } else {
-        console.log(`URL for ${name} is not a LeetCode profile. Skipping API call.`);
-        studentData.info = 'No LeetCode data available';
-      }
-      combinedData.push(studentData);
+
+        const combinedData = [];
+        for (let i = 0; i < rolls.length; i++) {
+            const roll = rolls[i];
+            const name = names[i];
+            const url = urls[i];
+            const section = sections[i];
+            let studentData = { roll, name, url, section };
+
+            if (url.startsWith('https://leetcode.com/')) {
+                const username = url.split('/').filter(Boolean).pop();
+
+                try {
+                    // Fetch submission stats
+                    const statsResponse = await axios.get(`https://leetcodeapi-v1.vercel.app/api/stats/${username}`);
+                    const statsData = statsResponse.data;
+
+                    // Fetch rank from LeetCode GraphQL API
+                    const query = `
+                      query getUserRank($username: String!) {
+                        matchedUser(username: $username) {
+                          profile {
+                            ranking
+                          }
+                        }
+                      }
+                    `;
+                    const rankResponse = await axios.post(
+                        'https://leetcode.com/graphql',
+                        { query, variables: { username } },
+                        { headers: { 'Content-Type': 'application/json', Referer: 'https://leetcode.com' } }
+                    );
+
+                    const rankData = rankResponse.data;
+                    const rank = rankData.data?.matchedUser?.profile?.ranking || 'N/A';
+
+                    studentData = {
+                        ...studentData,
+                        username,
+                        totalSolved: statsData.totalSolved || 0,
+                        easySolved: statsData.easySolved || 0,
+                        mediumSolved: statsData.mediumSolved || 0,
+                        hardSolved: statsData.hardSolved || 0,
+                        leetCodeRank: rank,
+                    };
+                } catch (error) {
+                    console.error(`Error fetching data for ${username}:`, error.message);
+                }
+            } else {
+                studentData.info = 'No LeetCode data available';
+            }
+            combinedData.push(studentData);
+        }
+
+        // Sort and save the data
+        combinedData.sort((a, b) => (b.totalSolved || 0) - (a.totalSolved || 0));
+        fs.writeFileSync('data.json', JSON.stringify(combinedData, null, 2));
+        console.log('Data refreshed and saved to data.json successfully.');
+    } catch (error) {
+        console.error('Error during data refresh:', error.message);
     }
-
-    // Sort the data by totalSolved in descending order, treating 'NA' or invalid values as 0
-    combinedData.sort((a, b) => {
-      const aTotalSolved = isNaN(a.totalSolved) ? 0 : a.totalSolved;
-      const bTotalSolved = isNaN(b.totalSolved) ? 0 : b.totalSolved;
-      return bTotalSolved - aTotalSolved;
-    });
-
-    fs.writeFileSync('data.json', JSON.stringify(combinedData, null, 2));
-    console.log('Data saved to data.json successfully.');
-  } catch (error) {
-    console.error('Error processing data:', error);
-  }
 }
 
-app.get('/data', (req, res) => {
-  res.sendFile(__dirname + '/data.json');
-});
+// Automatically refresh data every hour
+const REFRESH_INTERVAL = 60 * 60 * 1000; // 1 hour in milliseconds
+setInterval(fetchAndSaveData, REFRESH_INTERVAL);
 
-// Initial data fetch and periodic refresh every hour
+// Initial fetch when the server starts
 fetchAndSaveData();
-setInterval(fetchAndSaveData, 60 * 60 * 1000);
-
-app.listen(port, () => {
-  console.log(`Server is running at http://localhost:${port}`);
-});
