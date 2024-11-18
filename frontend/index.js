@@ -147,3 +147,23 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error('Error fetching data:', error);
     }
 });
+
+document.getElementById('search-btn').addEventListener('click', function() {
+    const searchValue = document.getElementById('search-input').value.toLowerCase();
+    const rows = document.querySelectorAll('#leaderboard-body tr');
+
+    rows.forEach(row => {
+        const nameCell = row.querySelector('td:nth-child(3)'); // Assuming the name is in the 3rd column
+        if (nameCell) {
+            const nameText = nameCell.textContent.toLowerCase();
+            row.style.display = nameText.includes(searchValue) ? '' : 'none';
+        }
+    });
+});
+
+// Optional: Allow searching by pressing Enter key
+document.getElementById('search-input').addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+        document.getElementById('search-btn').click();
+    }
+});
