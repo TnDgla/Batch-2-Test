@@ -15,3 +15,8 @@ tr {
 tr:hover {
     background-color: rgba(255, 255, 255, 0.1);
 }
+.input search{
+    height : 2px;
+    width : 6px;
+    color : black;
+}
