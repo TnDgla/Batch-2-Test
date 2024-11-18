@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 sectionFilter.appendChild(option);
             });
         };
-
+        
         // Function to export data to CSV
         const exportToCSV = (data) => {
             const headers = ['Rank', 'Roll Number', 'Name', 'Section', 'Total Solved', 'Easy', 'Medium', 'Hard', 'LeetCode URL'];
@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 leaderboardBody.appendChild(row);
             });
         };
-
+        
         // Filter function
         const filterData = (section) => {
             filteredData = section === 'all' 
@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             });
         };
-
+        
         // Initialize the page
         populateSectionFilter();
         renderLeaderboard(data);

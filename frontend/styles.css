@@ -1,11 +1,10 @@
 /* styles.css */
-
 body {
     font-family: Arial, sans-serif;
 }
-
 th:hover {
     background-color: rgba(0, 0, 0, 0.5);
+
 }
 
 tr {

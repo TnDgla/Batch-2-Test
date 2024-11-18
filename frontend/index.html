@@ -22,6 +22,9 @@
                         <button id="export-btn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded flex items-center transition duration-150 ease-in-out">
                             <i class="fas fa-download mr-2"></i> Export to CSV
                         </button>
+                        <button id="search-btn" class="bg-silver-400 hover:bg-red-300 text-white font-bold py-2 px-4 rounded flex items-center transition duration-150 ease-in-out">
+                            <i class="fas fa-search"></i>Search                           
+                        </button>
                     </div>
                 </div>
                 <table class="min-w-full bg-gray-900 rounded-lg overflow-hidden shadow-md">
@@ -66,8 +69,11 @@
                         <!-- Data will be dynamically added here -->
                     </tbody>
                 </table>
-
-                <!-- Loading State -->
+                <!--Loading State -->
+                 <div class="flex justify-center mt-4">
+                    <canvas id="pieChart"></canvas>
+                    </div>
+                 </div>
                 <div id="loading-state" class="hidden">
                     <div class="flex justify-center items-center p-8">
                         <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
