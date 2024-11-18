@@ -99,6 +99,36 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             });
         };
+const myChart=document.getElementById("myChart")
+ myChart = new Chart("myChart", {
+    type: "bar",
+    data: {},
+    options: {}
+  });
+  myChart = new Chart("myChart", {
+    type: "line",
+    data: {},
+    options: {}
+  });
+  
+new Chart("myChart", {
+    type: "bar",
+    data: {
+      labels: xValues,
+      datasets: [{
+        backgroundColor: barColors,
+        data: yValues
+      }]
+    },
+   
+  });
+
+
+
+
+
+
+
 
         // Initialize the page
         populateSectionFilter();
