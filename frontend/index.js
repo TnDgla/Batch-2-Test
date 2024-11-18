@@ -150,42 +150,52 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         document.getElementById('pie').addEventListener('click', () => {
             const countMap = new Map();
-            filteredData.forEach(item=> {
-                if (countMap.has(item.section)) {
-                    countMap.set(item.section, countMap.get(item.section) + 1);
-                } else {
-                    countMap.set(item.section, 1);
-                }
+            filteredData.forEach(item => {
+                const section = item.section || 'N/A';
+                countMap.set(section, (countMap.get(section) || 0) + 1);
             });
-            let keys = Object.keys(countMap)
-            let values = Object.values(countMap)
-            const child = document.getElementById('piec')
-            const canvas = document.createElement('canvas')
-            canvas.id = 'pieChart'
+        
+            // Convert Map to arrays
+            const keys = Array.from(countMap.keys());
+            const values = Array.from(countMap.values());
+        
+            // Remove any existing canvas before adding a new one
+            const existingCanvas = document.getElementById('pieChart');
+            if (existingCanvas) {
+                existingCanvas.remove();
+            }
+        
+            // Create and set up new canvas element for the pie chart
+            const canvas = document.createElement('canvas');
+            canvas.id = 'pieChart';
+            document.getElementById('piec').appendChild(canvas);
+        
+            // Set up the pie chart with Chart.js
             const ctx = canvas.getContext('2d');
-            const myChart = new Chart(ctx, {
-
+            new Chart(ctx, {
                 type: 'pie',
-         
                 data: {
-         
                     labels: keys,
-         
                     datasets: [{
-         
-                        label: '# of Votes',
-         
+                        label: 'Section Distribution',
                         data: values,
-         
-                        backgroundColor: ['red', 'blue', 'green', 'yellow','orange','purple','grey','white','indigo','voilet'],
-         
+                        backgroundColor: [
+                            'red', 'blue', 'green', 'yellow', 'orange', 'purple', 
+                            'grey', 'white', 'indigo', 'violet'
+                        ]
                     }]
                 },
-            });         
-            canvas.innerHTML = myChart
-            child.appendChild(canvas)
-        })
-
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                    }
+                }
+            });
+        });
+        
     } catch (error) {
         console.error('Error fetching data:', error);
     }
