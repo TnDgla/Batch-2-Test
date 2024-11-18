@@ -119,6 +119,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             renderLeaderboard(sortedData);
         });
 
+
         document.getElementById('sort-total').addEventListener('click', () => {
             totalSolvedDirection = totalSolvedDirection === 'desc' ? 'asc' : 'desc';
             const sortedData = sortData(filteredData, 'totalSolved', totalSolvedDirection, true);
@@ -136,14 +137,41 @@ document.addEventListener('DOMContentLoaded', async () => {
             const sortedData = sortData(filteredData, 'mediumSolved', mediumSolvedDirection, true);
             renderLeaderboard(sortedData);
         });
+        const searchBar=document.getElementById('search-bar');
+
+            const searchLeaderboard=(query)=>{
+               const lctq=query.toLowerCase();
+               const sd=filteredData.filter(student=>
+                student.name.toLowerCase().includes(lctq)
+               );
+               renderLeaderboard(sd);
+
+    } ;
+    searchBar.addEventListener('input',(e)=>{
+        searchLeaderboard(e.target.value);
+    });
 
         document.getElementById('sort-hard').addEventListener('click', () => {
             hardSolvedDirection = hardSolvedDirection === 'desc' ? 'asc' : 'desc';
             const sortedData = sortData(filteredData, 'hardSolved', hardSolvedDirection, true);
             renderLeaderboard(sortedData);
         });
+    //     const searchBar=document.getElementById('search-bar');
 
-    } catch (error) {
+    //         const searchLeaderboard=(query)=>{
+    //            const lowerCaseQuery=query.tolowerCase();
+    //            const searchedData=filteredData.filter(student=>
+    //             student.name.tolowerCase().includes(lowerCaseQuery)
+    //            );
+    //            renderLeaderboard(searchedData);
+
+    // } ;
+    // searchBar.addEventListener('input',(e)=>{
+    //     searchLeaderboard(e.target.value);
+    // });
+}
+    catch (error) {
         console.error('Error fetching data:', error);
     }
 });
+
