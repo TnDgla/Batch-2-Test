@@ -112,6 +112,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('export-btn').addEventListener('click', () => {
             exportToCSV(filteredData); // Export only filtered data
         });
+        const searchInput=document.getElementById('search');
+        const searchbtn=document.getElementById('button');
+
+        searchbtn.addEventListener('click',()=>{
+            const ans=searchInput.value.toUpperCase();
+            filteredData =data.filter(student=>(student.name).startsWith(ans));
+            renderLeaderboard(filteredData)
+            
+        })
 
         document.getElementById('sort-section').addEventListener('click', () => {
             sectionDirection = sectionDirection === 'desc' ? 'asc' : 'desc';
