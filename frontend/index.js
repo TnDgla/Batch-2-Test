@@ -142,6 +142,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             const sortedData = sortData(filteredData, 'hardSolved', hardSolvedDirection, true);
             renderLeaderboard(sortedData);
         });
+        document.getElementById('Searchedbutton').addEventListener('click',()=>{
+            //console.log(filteredData)
+            const SearchedText = document.getElementById('Search').value
+            const searchedData = filteredData.filter((data) => data.name === SearchedText)
+            renderLeaderboard(searchedData);
+        })
 
     } catch (error) {
         console.error('Error fetching data:', error);
