@@ -6,6 +6,42 @@ document.addEventListener('DOMContentLoaded', async () => {
         const leaderboardBody = document.getElementById('leaderboard-body');
         const sectionFilter = document.getElementById('section-filter');
 
+        var xValues = ["A", "B", "C", "D", "E","F","G","H","AC","AD","AE","A(H)"];
+        var yValues = [10,10,10,10,10,10,5,5,5,5,2,8];
+        var barColors = [
+  "#b91d47",
+  "#00aba9",
+  "#2b5797",
+  "#e8c3b9",
+  "#1e7145",
+  "#605EA1",
+  "#F6F7C4",
+  "#F6F7C4",
+  "#78B3CE",
+  "#AA5486",
+  "#8B5DFF",
+  "#DCE4C9"
+];
+
+new Chart("myChart", {
+  type: "pie",
+  data: {
+    labels: xValues,
+    datasets: [{
+      backgroundColor: barColors,
+      data: yValues
+    }]
+  },
+  options: {
+    title: {
+      display: true,
+      text: "Section-Wise Leaderboard"
+    }
+  }
+});
+        
+
+
         // Populate section filter dropdown
         const populateSectionFilter = () => {
             const sections = [...new Set(data.map(student => student.section || 'N/A'))].sort();
