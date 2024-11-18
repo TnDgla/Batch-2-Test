@@ -18,6 +18,69 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         };
 
+        // Function to filter student data based on search input
+        const search_input = document.querySelector(".search_input");
+        const search_form = document.querySelector(".search_form");
+        search_form.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const searchText = search_input.value.toLowerCase();
+            const filteredData = data.filter(student => {
+                const name = student.name.toLowerCase();
+                const roll = student.roll.toLowerCase();
+                return name.includes(searchText) || roll.includes(searchText);
+            });
+            renderLeaderboard(filteredData);
+        })
+
+        // Represent total number of students section wise in pie chart
+        const ctx = document.getElementById('myChart');
+        const DSection = data.filter(student => {
+            const section = student.section.toLowerCase();
+            return section.includes('d');
+        })
+        const ESection = data.filter(student => {
+            const section = student.section.toLowerCase();
+            return section.includes('e');
+        })
+        const CSection = data.filter(student => {
+            const section = student.section.toLowerCase();
+            return section.includes('c');
+        })
+        const ACSection = data.filter(student => {
+            const section = student.section.toLowerCase();
+            return section.includes('ac');
+        })
+        const AHSection = data.filter(student => {
+            const section = student.section.toLowerCase();
+            return section.includes('a(h)');
+        })
+        // console.log(DSection.length, CSection.length, ESection.length, ACSection.length, AHSection.length);
+        const pieData = {
+            labels: [
+                'D',
+                'E',
+                'C',
+                'AC',
+                'A(H)'
+            ],
+            datasets: [{
+                label: '',
+                data: [DSection.length, ESection.length, CSection.length,ACSection.length, AHSection.length],
+                backgroundColor: [
+                    'blue',
+                    'green',
+                    'yellow',
+                    'red',
+                    'lime'
+                ],
+                hoverOffset: 4
+            }]
+        };
+        new Chart(ctx, {
+            type: 'pie',
+            data: pieData
+        });
+
         // Function to export data to CSV
         const exportToCSV = (data) => {
             const headers = ['Rank', 'Roll Number', 'Name', 'Section', 'Total Solved', 'Easy', 'Medium', 'Hard', 'LeetCode URL'];
