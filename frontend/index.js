@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         let filteredData = [...data]; // Keep original data separate
         const leaderboardBody = document.getElementById('leaderboard-body');
         const sectionFilter = document.getElementById('section-filter');
+        const searchNameInput = document.getElementById('search-name');
+        const searchBtn = document.getElementById('search-btn');
 
         // Populate section filter dropdown
         const populateSectionFilter = () => {
@@ -99,10 +101,34 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             });
         };
+        const searchByName = (name) => {
+            const lowerCaseName = name.trim().toLowerCase(); // Ensure input is trimmed and lowercased
+            const searchedData = filteredData.filter(student => 
+                student.name.trim().toLowerCase().includes(lowerCaseName)
+            );
+            renderLeaderboard(searchedData);
+        };
 
         // Initialize the page
         populateSectionFilter();
         renderLeaderboard(data);
+
+        sectionFilter.addEventListener('change', (e) => {
+            filterData(e.target.value);
+        });
+
+        searchBtn.addEventListener('click', () => {
+            const name = searchNameInput.value.trim();
+            searchByName(name);
+        });
+        
+        searchNameInput.addEventListener('keyup', (e) => {
+            if (e.key === 'Enter') {
+                const name = searchNameInput.value.trim();
+                searchByName(name);
+            }
+        });
+        
 
         // Event Listeners
         sectionFilter.addEventListener('change', (e) => {
