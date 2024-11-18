@@ -78,7 +78,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                 : data.filter(student => (student.section || 'N/A') === section);
             renderLeaderboard(filteredData);
         };
+        
 
+      
         // Sorting logic with ascending and descending functionality
         let totalSolvedDirection = 'desc';
         let easySolvedDirection = 'desc';
@@ -99,8 +101,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             });
         };
-
+        document.getElementById('search-input').addEventListener('input',(e)=>{
+const searchValue = e.target.value.toLowerCase();
+const filterData = data.filter(student => student.name.toLowerCase().includes(searchValue));
+renderLeaderboard(filterData);
+        })
         // Initialize the page
+
+
         populateSectionFilter();
         renderLeaderboard(data);
 

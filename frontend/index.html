@@ -14,6 +14,7 @@
             <div class="col-span-2 bg-gray-800 rounded-lg shadow-md p-6 overflow-x-auto">
                 <div class="flex justify-between items-center mb-6">
                     <h1 class="text-4xl font-bold">TBPPP Leaderboard</h1>
+                    
                     <div class="flex gap-4 items-center">
                         <select id="section-filter" class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <option value="all">All Sections</option>
@@ -22,6 +23,9 @@
                         <button id="export-btn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded flex items-center transition duration-150 ease-in-out">
                             <i class="fas fa-download mr-2"></i> Export to CSV
                         </button>
+                        <div>
+                            <input type="text" id="search-input" class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600" placeholder="enter name">
+                        </div>
                     </div>
                 </div>
                 <table class="min-w-full bg-gray-900 rounded-lg overflow-hidden shadow-md">
@@ -67,6 +71,9 @@
                     </tbody>
                 </table>
 
+<!-- pie chart -->
+
+    
                 <!-- Loading State -->
                 <div id="loading-state" class="hidden">
                     <div class="flex justify-center items-center p-8">
