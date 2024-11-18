@@ -5,15 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script
+src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+</script>
     <title>LeetCode Leaderboard</title>
 </head>
 <body class="bg-gray-900 text-white p-5">
+    <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
     <div class="container mx-auto my-10">
         <div class="">
             <!-- Leaderboard -->
             <div class="col-span-2 bg-gray-800 rounded-lg shadow-md p-6 overflow-x-auto">
                 <div class="flex justify-between items-center mb-6">
                     <h1 class="text-4xl font-bold">TBPPP Leaderboard</h1>
+                    <div>
+                        <input type="text" id="search-input" class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600 "
+                        placeholder="Enter name">
+                    </div>
                     <div class="flex gap-4 items-center">
                         <select id="section-filter" class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <option value="all">All Sections</option>
@@ -84,6 +92,6 @@
             </div>
         </div>
     </div>
-    <script src="index.js"></script>
+    <script src="index.js"></>
 </body>
 </html>
