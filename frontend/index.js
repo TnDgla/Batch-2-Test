@@ -5,6 +5,48 @@ document.addEventListener('DOMContentLoaded', async () => {
         let filteredData = [...data]; // Keep original data separate
         const leaderboardBody = document.getElementById('leaderboard-body');
         const sectionFilter = document.getElementById('section-filter');
+        const searchInput = document.getElementById('search-input'); // Search input element
+
+        //Function for getting count of sections
+        const sectionCounts={};
+        const getSectionDistribution=(data)=>{
+            data.forEach(student=>{
+                const section = student.section || 'N/A';
+                sectionCounts[section]=(sectionCounts[section] || 0)+1;
+            })
+            return sectionCounts;
+        };
+
+        //Pie Chart Creation using Chart.js
+        const sectionData=getSectionDistribution(data);
+        const renderSectionPieChart=(sectionData)=>{
+            const cpp=document.getElementById('sectionPieChart').getContext('2d');
+            const labels=Object.keys(sectionData);
+            const values=Object.values(sectionData);
+            new Chart(cpp,{
+                type:'pie',
+                data:{
+                    labels:labels,
+                    datasets:[{
+                        data:values,
+                        backgroundColor:[ "#ff2284","#36a2eb","#ff8856","#4caf50","#f44336","#ffc107","#adff2f","#a52a2a","#00008b","#6877ed"
+                        ],
+                        hoverOffset:4
+                    }]
+                },
+                options:{
+                    responsive:true,
+                    plugins:{
+                        legend:{
+                            position:'bottom',
+                            labels:{
+                                color:'white'
+                        }
+                    }
+                }
+            }
+        });
+    };
 
         // Populate section filter dropdown
         const populateSectionFilter = () => {
@@ -72,10 +114,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         };
 
         // Filter function
-        const filterData = (section) => {
-            filteredData = section === 'all' 
-                ? [...data]
-                : data.filter(student => (student.section || 'N/A') === section);
+        const filterData = (section, searchQuery) => {
+            filteredData = data.filter(student => {
+                const matchesSection = section === 'all' || (student.section || 'N/A') === section;
+                const matchesSearch = student.name.toLowerCase().includes(searchQuery.toLowerCase()) || student.roll.toLowerCase().includes(searchQuery.toLowerCase());
+                return matchesSection && matchesSearch;
+            });
             renderLeaderboard(filteredData);
         };
 
@@ -103,10 +147,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Initialize the page
         populateSectionFilter();
         renderLeaderboard(data);
+        renderSectionPieChart(sectionData);  //Rendering the Live Pie-Chart
 
         // Event Listeners
         sectionFilter.addEventListener('change', (e) => {
-            filterData(e.target.value);
+            filterData(e.target.value, searchInput.value); // Filter by section and search query
+        });
+
+        searchInput.addEventListener('input', (e) => {
+            filterData(sectionFilter.value, e.target.value); // Filter by section and search query
         });
 
         document.getElementById('export-btn').addEventListener('click', () => {
