@@ -1,8 +1,95 @@
 document.addEventListener('DOMContentLoaded', async () => {
+    document.getElementById('search-bar').addEventListener('input', function (){
+        const searchTerm = this.value.toLowerCase();
+        const rows = document.querySelectorAll("#leaderboard-body tr");
+
+        rows.forEach(row => {
+            const nameCell = row.querySelector('td:nth-child(3)');
+            const nameText = nameCell.textContent.toLowerCase();
+
+            if(nameText.includes(searchTerm)){
+                row.style.display = '';
+            }
+            else{
+                row.style.display = 'none';
+            }
+        });
+    });
     try {
         const response = await fetch("http://localhost:3001/data");
         const data = await response.json();
         let filteredData = [...data]; // Keep original data separate
+        console.log(filteredData);
+
+        //Pie chart
+
+        var arr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        for(let i = 0; i < filteredData.length; i++){
+            let obj = filteredData[i];
+            if(obj.section == "A(H)"){
+                arr[0]++;
+            }
+            else if(obj.section == "AC"){
+                arr[1]++;
+            }
+            else if(obj.section == "AD"){
+                arr[2]++;
+            }
+            else if(obj.section == "AE"){
+                arr[3]++;
+            }
+            else if(obj.section == "C"){
+                arr[4]++;
+            }
+            else if(obj.section == "D"){
+                arr[5]++;
+            }
+            else if(obj.section == "E"){
+                arr[6]++;
+            }
+            else if(obj.section == "F"){
+                arr[7]++;
+            }
+            else if(obj.section == "G"){
+                arr[8]++;
+            }
+            else if(obj.section == "H"){
+                arr[9]++;
+            }
+        }
+
+        var xValues = ["AH", "AC", "AD", "AE", "C", "D", "E", "F", "G", "H"];
+        var yValues = arr;
+        var barColors = [
+                    "brown",
+                    "beige",
+                    "skyblue",
+                    "gray",
+                    "red",
+                    "blue",
+                    "pink",
+                    "purple",
+                    "yellow",
+                    "green"
+        ];
+    
+         new Chart("myChart", {
+      type: "pie",
+      data: {
+        labels: xValues,
+        datasets: [{
+          backgroundColor: barColors,
+          data: yValues
+        }]
+      },
+      options: {
+        title: {
+          display: true,
+          text: "Section-wise pie chart"
+        }
+      }
+        });
+
         const leaderboardBody = document.getElementById('leaderboard-body');
         const sectionFilter = document.getElementById('section-filter');
 

@@ -5,9 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <title>LeetCode Leaderboard</title>
 </head>
 <body class="bg-gray-900 text-white p-5">
+
     <div class="container mx-auto my-10">
         <div class="">
             <!-- Leaderboard -->
@@ -22,7 +25,14 @@
                         <button id="export-btn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded flex items-center transition duration-150 ease-in-out">
                             <i class="fas fa-download mr-2"></i> Export to CSV
                         </button>
+                        
                     </div>
+                    
+                </div>
+                <input placeholder="Search..." id="search-bar" class="py-2 px-1 rounded-md text-black  my-4 w-full">
+
+                <div class="flex justify-center my-8"> 
+                    <canvas id="myChart" style="width:100%; max-width:800px" class=""></canvas>
                 </div>
                 <table class="min-w-full bg-gray-900 rounded-lg overflow-hidden shadow-md">
                     <thead>
@@ -84,6 +94,13 @@
             </div>
         </div>
     </div>
+
+    <
+    
+
+<script>
+    
+    </script>
     <script src="index.js"></script>
 </body>
 </html>
