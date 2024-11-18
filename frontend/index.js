@@ -147,3 +147,22 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error('Error fetching data:', error);
     }
 });
+
+const searchB = document.getElementById('search-box');
+const leaderBody = document.getElementById('leaderboard-body');
+
+searchB.addEventListener('input', function() {
+    const query = searchB.value.toLowerCase();
+    const rows = leaderBody.querySelectorAll('tr');
+
+    rows.forEach(row => {
+        const nameCell = row.cells[2].textContent.toLowerCase();
+        const rollCell = row.cells[1].textContent.toLowerCase(); 
+        
+        if (nameCell.includes(query) || rollCell.includes(query)) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+});
