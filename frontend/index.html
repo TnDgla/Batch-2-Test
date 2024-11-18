@@ -15,6 +15,7 @@
                 <div class="flex justify-between items-center mb-6">
                     <h1 class="text-4xl font-bold">TBPPP Leaderboard</h1>
                     <div class="flex gap-4 items-center">
+                        <!-- <input type="text" placeholder="Search Name" id="Search" class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"/> -->
                         <select id="section-filter" class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <option value="all">All Sections</option>
                             <!-- Options will be dynamically added -->
@@ -23,7 +24,14 @@
                             <i class="fas fa-download mr-2"></i> Export to CSV
                         </button>
                     </div>
+                    <div class="relative">
+                        <input id="search-bar" type="text" class="bg-gray-700 text-white px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Search by Name ">
+                        <button id="search-btn" class="absolute right-0 top-0 mt-2 mr-4 text-white">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
                 </div>
+                <!-- <canvas id="myChart" style="width:100%;max-width:700px"></canvas> -->
                 <table class="min-w-full bg-gray-900 rounded-lg overflow-hidden shadow-md">
                     <thead>
                         <tr class="bg-gray-700">
@@ -85,5 +93,8 @@
         </div>
     </div>
     <script src="index.js"></script>
+    <script
+src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+    </script>
 </body>
 </html>
