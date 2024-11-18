@@ -79,6 +79,85 @@ document.addEventListener('DOMContentLoaded', async () => {
             renderLeaderboard(filteredData);
         };
 
+        var chrt = document.getElementById("chartId").getContext("2d");
+        var chartId = new Chart(chrt, {
+            type: 'pie',
+            data: {
+                labels: ["A(H)", "AC", "AD", "AE", "C", "D", "E", "F", "G", "H"],
+                datasets: [{
+                label: "online tutorial subjects",
+                data: [33, 50, 54, 64, 124, 127, 136, 76, 48, 74],
+                backgroundColor: ['lightblue', 'lightgreen', 'yellow', 'lightcoral', 'gold', 'lightslategray'],
+                hoverOffset: 5
+                }],
+            },
+            options: {
+                responsive: false,
+            },
+        });
+
+        // const pieChart = new Chart(pieChartCanvas, {
+        //     type: 'pie',
+        //     data: {
+        //         labels: ['All', 'Section 1', 'Section 2', 'Section 3'],
+        //         datasets: [{
+        //             label: 'Students',
+        //             data: [data.length, 0, 0, 0],
+        //             backgroundColor: [
+        //                 'rgba(255, 99, 132, 0.2)',
+        //                 'rgba(54, 162, 235, 0.2)',
+        //                 'rgba(255, 206, 86, 0.2)',
+        //                 'rgba(75, 192, 192, 0.2)',
+        //                 ],
+        //             borderColor: [
+        //                 'rgba(255, 99, 132, 1)',
+        //                 'rgba(54, 162, 235, 1)',
+        //                 'rgba(255, 206, 86, 1)',
+        //                 'rgba(75, 192, 192, 1)',
+        //                 ],
+        //             borderWidth: 1
+        //                 }],
+        //                 },
+        //             options: {
+        //                 title: {
+        //                 display: true,
+        //                 text: 'Students by Section'
+        //             },
+        //             legend: {
+        //                 display: false
+        //             },
+        //             tooltips: {
+        //                 enabled: false
+        //             },
+        //             animation: {
+        //                 animateScale: true
+        //             },
+        //             }
+        //         });
+        // pieChart.canvas.addEventListener('click', (event) => {
+        // const activePoints = pieChart.getElementsAtEventForMode(event, 'point', {
+        //     intersect: false
+        //     }, true);
+        //     if (activePoints.length > 0) {
+        //         const chartPoint = activePoints[0];
+        //         const section = chartPoint._chart.data.labels[chartPoint._index];
+        //         const filteredData = data.filter(item => item.section === section);
+        //         barChart.data.datasets[0].data = filteredData.map(item => item.score);
+        //         barChart.update();
+        //     }
+        // });
+
+        // document.getElementById('pie-chart').addEventListener('click', () => {
+        //     pieChart.canvas.style.display = 'block';
+        //     barChart.canvas.style.display = 'none';
+        //     });
+
+        // search student function
+        const searchStudent = (query) => {
+            const filteredData = data.filter(student => student.name.toLowerCase().includes(query.toLowerCase()));
+            renderLeaderboard(filteredData);
+            };
+
         // Sorting logic with ascending and descending functionality
         let totalSolvedDirection = 'desc';
         let easySolvedDirection = 'desc';
@@ -117,6 +196,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             sectionDirection = sectionDirection === 'desc' ? 'asc' : 'desc';
             const sortedData = sortData(filteredData, 'section', sectionDirection, false);
             renderLeaderboard(sortedData);
+        });
+
+        // search name function
+        document.getElementById('search-name').addEventListener('input', (e) => {
+            searchStudent(e.target.value);
         });
 
         document.getElementById('sort-total').addEventListener('click', () => {
