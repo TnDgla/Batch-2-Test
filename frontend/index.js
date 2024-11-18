@@ -143,6 +143,40 @@ document.addEventListener('DOMContentLoaded', async () => {
             renderLeaderboard(sortedData);
         });
 
+
+        // --------------TASK 1
+        
+        const getname = document.getElementById('entername');
+        var sname = "";
+        document.querySelector("#searchst").addEventListener('click', () => {
+            sname = getname.value;
+            console.log(sname);
+            
+            filterDataName(sname);
+        })
+        const filterDataName = (sname) => {
+            if (sname == null) {
+                renderLeaderboard(sortedData);
+            }
+            filteredData = data.filter(student => (student.name.toLowerCase().includes(sname.toLowerCase())))
+            renderLeaderboard(filteredData);
+
+        };
+
+        
+        
+
+        // ----------sorting on basis of name
+        document.getElementById('sort-name').addEventListener('click', () => {
+            sectionDirection = sectionDirection === 'desc' ? 'asc' : 'desc';
+            const sortedData = sortData(filteredData, 'name', sectionDirection, false);
+            renderLeaderboard(sortedData);
+        });
+
+        
+
+
+
     } catch (error) {
         console.error('Error fetching data:', error);
     }
