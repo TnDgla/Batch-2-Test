@@ -6,6 +6,52 @@ document.addEventListener('DOMContentLoaded', async () => {
         const leaderboardBody = document.getElementById('leaderboard-body');
         const sectionFilter = document.getElementById('section-filter');
 
+        let input = document.querySelector("#search")
+        let value;
+        input.addEventListener('input', (e) => {
+            value = e.target.value.toLowerCase();
+        })
+        let button = document.querySelector("#search-button");
+        button.addEventListener('click', () => {
+            let searchedData = data;
+            searchedData = searchedData.filter((obj) => obj.name.toLowerCase().includes(value));
+            renderLeaderboard(searchedData);
+        })
+        let map = new Map();
+        data.forEach((obj)=>{
+            if(map.has(obj.section)){
+                map.set(obj.section,map.get(obj.section)+1);
+            }else{
+                map.set(obj.section,1);
+            }
+        })
+        let sections = [...map.keys()];
+        let arr = sections.map((item)=>map.get(item));
+        const ctx = document.getElementById('myChart');
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: sections,
+                datasets: [{
+                    label: 'students',
+                    data: arr,
+                    backgroundColor: [
+                        '#1F4529',
+                        '#9694FF',
+                        '#FF8000',
+                        '#D76C82',
+                        '#22177A',
+                        '#4C1F7A',
+                        '#219B9D',
+                        '#F5EFFF',
+                        '#59243E',
+                        '#49243E',
+                    ],
+                    hoverOffset: 4
+                }]
+            },
+        });
+
         // Populate section filter dropdown
         const populateSectionFilter = () => {
             const sections = [...new Set(data.map(student => student.section || 'N/A'))].sort();
@@ -34,7 +80,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     student.url
                 ].join(',');
             });
-            
+
             const csvContent = [headers.join(','), ...csvRows].join('\n');
             const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement('a');
@@ -57,9 +103,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <td class="p-4">${index + 1}</td>
                     <td class="p-4">${student.roll}</td>
                     <td class="p-4">
-                        ${student.url.startsWith('https://leetcode.com/u/') 
-                            ? `<a href="${student.url}" target="_blank" class="text-blue-400">${student.name}</a>`
-                            : `<div class="text-red-500">${student.name}</div>`}
+                        ${student.url.startsWith('https://leetcode.com/u/')
+                        ? `<a href="${student.url}" target="_blank" class="text-blue-400">${student.name}</a>`
+                        : `<div class="text-red-500">${student.name}</div>`}
                     </td>
                     <td class="p-4">${student.section || 'N/A'}</td>
                     <td class="p-4">${student.totalSolved || 'N/A'}</td>
@@ -73,7 +119,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Filter function
         const filterData = (section) => {
-            filteredData = section === 'all' 
+            filteredData = section === 'all'
                 ? [...data]
                 : data.filter(student => (student.section || 'N/A') === section);
             renderLeaderboard(filteredData);
@@ -147,3 +193,4 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error('Error fetching data:', error);
     }
 });
+
