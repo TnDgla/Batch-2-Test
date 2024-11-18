@@ -143,7 +143,20 @@ document.addEventListener('DOMContentLoaded', async () => {
             renderLeaderboard(sortedData);
         });
 
+        // implement a search feature
+        document.getElementById('search-input').addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const filteredData = searchTerm === '' ? data : data.filter(student => student.name.toLowerCase().includes(searchTerm));
+            renderLeaderboard(filteredData);
+        });
+
+        // Section-wise Pie Chart
+        const sectionPieChart = document.getElementById('section-pie-chart');
+
+
     } catch (error) {
         console.error('Error fetching data:', error);
     }
 });
+
+
