@@ -14,12 +14,27 @@
             <div class="col-span-2 bg-gray-800 rounded-lg shadow-md p-6 overflow-x-auto">
                 <div class="flex justify-between items-center mb-6">
                     <h1 class="text-4xl font-bold">TBPPP Leaderboard</h1>
+
+                    <div class="row g-3 align-items-center">
+                        
+                        <div class="col-auto" id="ques">
+                            <input type="text" class="form-control" placeholder="Search Here"
+                                style="height: 40px; width: 300px; border: 2px solid blue; border-radius: 5px;">
+                        </div>
+                    </div>
+                    <button id = "search" id="export-btn" style="margin-left: 10px;"
+                        class="bg-blue-500 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded flex items-center ">
+                        Search
+                    </button>
+
                     <div class="flex gap-4 items-center">
-                        <select id="section-filter" class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <select id="section-filter"
+                            class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <option value="all">All Sections</option>
                             <!-- Options will be dynamically added -->
                         </select>
-                        <button id="export-btn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded flex items-center transition duration-150 ease-in-out">
+                        <button id="export-btn"
+                            class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded flex items-center transition duration-150 ease-in-out">
                             <i class="fas fa-download mr-2"></i> Export to CSV
                         </button>
                     </div>
@@ -27,9 +42,12 @@
                 <table class="min-w-full bg-gray-900 rounded-lg overflow-hidden shadow-md">
                     <thead>
                         <tr class="bg-gray-700">
-                            <th class="p-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Rank</th>
-                            <th class="p-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Roll Number</th>
-                            <th class="p-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Name</th>
+                            <th class="p-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Rank
+                            </th>
+                            <th class="p-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Roll
+                                Number</th>
+                            <th class="p-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Name
+                            </th>
                             <th class="p-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                                 Section
                                 <button id="sort-section" class="ml-2 hover:text-white">
@@ -84,6 +102,9 @@
             </div>
         </div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
     <script src="index.js"></script>
 </body>
+
 </html>
