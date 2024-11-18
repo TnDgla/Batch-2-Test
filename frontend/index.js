@@ -6,6 +6,63 @@ document.addEventListener('DOMContentLoaded', async () => {
         const leaderboardBody = document.getElementById('leaderboard-body');
         const sectionFilter = document.getElementById('section-filter');
 
+
+        // Function to search for persons by name search option
+let value;
+document.getElementById('name-filter').addEventListener('input', (e) => {
+    const searchTerm = e.target.value.toLowerCase();
+    value = searchTerm;
+});
+
+let button=document.querySelector("#search-button");
+button.addEventListener("click",function(){
+    let Searchdata=data;
+    Searchdata=Searchdata.filter((obj)=>obj.name.toLowerCase() == value);
+    renderLeaderboard(Searchdata);
+})
+
+//pie chart
+const pie=new Map();
+
+data.forEach((student)=>{
+    if(pie.has(student.section)){
+        pie.set(student.section,pie.get(student.section)+1);
+    }
+    else{
+        pie.set(student.section,1);
+    }
+})
+
+let participants=[...pie.keys()];
+
+let array=participants.map((participant) => pie.get(participant));
+
+
+const ctx = document.getElementById('myChart');
+
+new Chart(ctx, {
+  type: 'pie',
+  data: {
+    labels: participants,
+      datasets: [{
+        label: 'Participants by Section',
+        data: array,
+        backgroundColor: [
+          'rgb(255, 99, 132)',
+          'rgb(54, 162, 235)',
+          'rgb(255, 205, 86)',
+          'rgb(75, 192, 192)',
+          'rgb(153, 102, 20)',
+          'rgb(255, 159, 64)',
+          'rgb(255, 99, 132)',
+          'rgb(54, 162, 235)',
+          'rgb(255, 205, 86)',
+          'rgb(75, 192, 192)',
+        ],
+        hoverOffset: 4
+      }]
+  }
+});
         // Populate section filter dropdown
         const populateSectionFilter = () => {
             const sections = [...new Set(data.map(student => student.section || 'N/A'))].sort();
@@ -147,3 +204,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error('Error fetching data:', error);
     }
 });
+
+
+
+
+
+
+
+
