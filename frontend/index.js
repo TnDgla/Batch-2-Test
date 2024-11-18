@@ -151,7 +151,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         });
                         return sectionCounts;
                     };
-        // Function to render the pie chart
+        // Function  pie chart
         const renderPieChart = () => {
             console.log("calculating")
             const sectionDistribution = calculateSectionDistribution();
