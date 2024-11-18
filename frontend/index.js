@@ -18,6 +18,48 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         };
 
+        //pieChart
+        const ctx=document.querySelector('#myChart');
+        const DSection=data.filter(student =>{
+            const section=student.section.toLowerCase();
+            return section.includes('d');
+        })
+        const ESection=data.filter(student =>{
+            const section=student.section.toLowerCase();
+            return section.includes('e');
+        })
+        const CSection=data.filter(student =>{
+            const section=student.section.toLowerCase();
+            return section.includes('c');
+        })
+        const AHSection=data.filter(student =>{
+            const section=student.section.toLowerCase();
+            return section.includes('ah');
+        })
+        const ACSection=data.filter(student =>{
+            const section=student.section.toLowerCase();
+            return section.includes('ac');
+        })
+        
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+              labels: ['D', 'E', 'C', 'AH', 'AC'],
+              datasets: [{
+                label: '',
+                data: [DSection.length, ESection.length, CSection.length, AHSection.length, ACSection.length],
+                borderWidth: 1
+              }]
+            },
+            // options: {
+            //   scales: {
+            //     y: {
+            //       beginAtZero: true
+            //     }
+            //   }
+            // }
+          });
+
         // Function to export data to CSV
         const exportToCSV = (data) => {
             const headers = ['Rank', 'Roll Number', 'Name', 'Section', 'Total Solved', 'Easy', 'Medium', 'Hard', 'LeetCode URL'];
@@ -71,6 +113,21 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         };
 
+        const search_input=document.querySelector(".username-search");
+        const search_btn=document.querySelector("#search-btn");
+        search_btn.addEventListener('click', ()=>{
+            const searchText=search_input.value.toLowerCase();
+            const filterData=data.filter(student =>{
+                const name=student.name.toLowerCase();
+                const roll=student.roll.toLowerCase();
+                const url=student.url.toLowerCase();
+                return name.includes(searchText)||roll.includes(searchText);
+            });
+            renderLeaderboard(filterData);
+        })
+
+        
+
         // Filter function
         const filterData = (section) => {
             filteredData = section === 'all' 
@@ -78,7 +135,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 : data.filter(student => (student.section || 'N/A') === section);
             renderLeaderboard(filteredData);
         };
-
         // Sorting logic with ascending and descending functionality
         let totalSolvedDirection = 'desc';
         let easySolvedDirection = 'desc';
@@ -99,6 +155,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             });
         };
+
+
+
+        
 
         // Initialize the page
         populateSectionFilter();
@@ -142,6 +202,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const sortedData = sortData(filteredData, 'hardSolved', hardSolvedDirection, true);
             renderLeaderboard(sortedData);
         });
+        
 
     } catch (error) {
         console.error('Error fetching data:', error);
