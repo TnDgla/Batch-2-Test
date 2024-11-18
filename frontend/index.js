@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         let filteredData = [...data]; // Keep original data separate
         const leaderboardBody = document.getElementById('leaderboard-body');
         const sectionFilter = document.getElementById('section-filter');
+        const searchInput = document.getElementById('sear-chbar'); // Search input field
 
         // Populate section filter dropdown
         const populateSectionFilter = () => {
@@ -71,12 +72,29 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         };
 
-        // Filter function
+        // Filter function by section
         const filterData = (section) => {
             filteredData = section === 'all' 
                 ? [...data]
                 : data.filter(student => (student.section || 'N/A') === section);
             renderLeaderboard(filteredData);
+        };
+
+        // Search filter function
+        const searchData = (searchTerm) => {
+            if (!searchTerm) {
+                renderLeaderboard(filteredData);
+                return;
+            }
+
+            // Convert search term to lowercase for case-insensitive search
+            const lowerSearchTerm = searchTerm.toLowerCase();
+            const searchedData = filteredData.filter(student => 
+                student.name.toLowerCase().includes(lowerSearchTerm) || 
+                student.roll.toString().includes(lowerSearchTerm)
+            );
+
+            renderLeaderboard(searchedData);
         };
 
         // Sorting logic with ascending and descending functionality
@@ -107,6 +125,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Event Listeners
         sectionFilter.addEventListener('change', (e) => {
             filterData(e.target.value);
+        });
+
+        // Search bar event listener
+        searchInput.addEventListener('input', (e) => {
+            searchData(e.target.value);
         });
 
         document.getElementById('export-btn').addEventListener('click', () => {
