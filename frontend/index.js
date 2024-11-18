@@ -5,6 +5,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         let filteredData = [...data]; // Keep original data separate
         const leaderboardBody = document.getElementById('leaderboard-body');
         const sectionFilter = document.getElementById('section-filter');
+// function for searching
+        const searching=document.getElementById("searching");
+        const searchingbtn=document.getElementById("searchingbtn");
+        const search=() =>{
+            const val=searching.value;
+            filteredData=data.filter(x=>x.name.includes(val.toUpperCase()));
+            renderLeaderboard(filteredData);
+        }
+        searchingbtn.addEventListener('click',()=>{search()});
+        
 
         // Populate section filter dropdown
         const populateSectionFilter = () => {
@@ -58,8 +68,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <td class="p-4">${student.roll}</td>
                     <td class="p-4">
                         ${student.url.startsWith('https://leetcode.com/u/') 
-                            ? `<a href="${student.url}" target="_blank" class="text-blue-400">${student.name}</a>`
-                            : `<div class="text-red-500">${student.name}</div>`}
+                            ? <a href="${student.url}" target="_blank" class="text-blue-400">${student.name}</a>
+                            : <div class="text-red-500">${student.name}</div>}
                     </td>
                     <td class="p-4">${student.section || 'N/A'}</td>
                     <td class="p-4">${student.totalSolved || 'N/A'}</td>
@@ -145,5 +155,5 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     } catch (error) {
         console.error('Error fetching data:', error);
-    }
+}
 });
