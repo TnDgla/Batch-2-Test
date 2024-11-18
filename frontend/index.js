@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         let filteredData = [...data]; // Keep original data separate
         const leaderboardBody = document.getElementById('leaderboard-body');
         const sectionFilter = document.getElementById('section-filter');
+        const searchInput = document.getElementById('search');
 
         // Populate section filter dropdown
         const populateSectionFilter = () => {
@@ -71,6 +72,20 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         };
 
+        const SearchData=(searchTerm) => {
+            if(!searchTerm){
+                renderLeaderboard(filterData);
+                return;
+            }
+
+            const lowerSearchTerm=searchTerm.tolowercase();
+            const SearchData = filterData.filter(student =>
+                student.name.tolowercase().include(lowerSearchTerm) ||
+                student.roll.toString().includes(lowerSearchTerm)
+            );
+            renderLeaderboard(SearchData);
+        };
+
         // Filter function
         const filterData = (section) => {
             filteredData = section === 'all' 
@@ -107,6 +122,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Event Listeners
         sectionFilter.addEventListener('change', (e) => {
             filterData(e.target.value);
+        });
+
+        searchInput.addEventListener('input' , (e)=> {
+            SearchData(e.target.value);
         });
 
         document.getElementById('export-btn').addEventListener('click', () => {
