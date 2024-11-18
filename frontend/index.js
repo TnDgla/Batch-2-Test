@@ -5,6 +5,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         let filteredData = [...data]; // Keep original data separate
         const leaderboardBody = document.getElementById('leaderboard-body');
         const sectionFilter = document.getElementById('section-filter');
+        const searchInput = document.getElementById('search-input');
+        const pieContainer = document.getElementById('container')
+        const pieChartBtn = document.getElementById('pieChart')
 
         // Populate section filter dropdown
         const populateSectionFilter = () => {
@@ -18,7 +21,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         };
 
-        // Function to export data to CSV
+
+        // function to search username
+        const searchUsername = () => {
+            const searchTerm = searchInput.value.toLowerCase();
+            filteredData = data.filter(student => student.name.toLowerCase().includes(searchTerm));
+            renderLeaderboard(filteredData);
+        };
+
+
         const exportToCSV = (data) => {
             const headers = ['Rank', 'Roll Number', 'Name', 'Section', 'Total Solved', 'Easy', 'Medium', 'Hard', 'LeetCode URL'];
             const csvRows = data.map((student, index) => {
@@ -142,6 +153,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             const sortedData = sortData(filteredData, 'hardSolved', hardSolvedDirection, true);
             renderLeaderboard(sortedData);
         });
+        searchInput.addEventListener('input', searchUsername);
+        document.getElementById('search-btn').addEventListener('click', searchUsername);
+
 
     } catch (error) {
         console.error('Error fetching data:', error);
