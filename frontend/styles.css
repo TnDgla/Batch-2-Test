@@ -15,3 +15,10 @@ tr {
 tr:hover {
     background-color: rgba(255, 255, 255, 0.1);
 }
+.d1{
+    display:flex;
+    position:absolute;
+    z-index:1;
+    width:50vw;
+    height:50vh;
+}
