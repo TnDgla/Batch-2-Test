@@ -146,4 +146,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     } catch (error) {
         console.error('Error fetching data:', error);
     }
+    function filterLeaderboard() {
+        const searchInput = document.getElementById('search-bar').value.toLowerCase();
+        const tableRows = document.querySelectorAll('#leaderboard-body tr');
+    
+        tableRows.forEach(row => {
+            const nameCell = row.querySelector('td:nth-child(3)'); 
+            if (nameCell) {
+                const name = nameCell.textContent.toLowerCase();
+                if (name.includes(searchInput)) {
+                    row.style.display = ''; 
+                } else {
+                    row.style.display = 'none'; 
+                }
+            }
+        });
+    }
+     document.getElementById('search-bar').addEventListener('input',filterLeaderboard);
+        
 });
