@@ -69,6 +69,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 `;
                 leaderboardBody.appendChild(row);
             });
+        
         };
 
         // Filter function
@@ -145,5 +146,24 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     } catch (error) {
         console.error('Error fetching data:', error);
+    }
+}
+
+);
+document.getElementById('search-btn').addEventListener('click', function() {
+    const searchValue = document.getElementById('search-input').value.toLowerCase();
+    const rows = document.querySelectorAll('#leaderboard-body tr');
+
+    rows.forEach(row => {
+        const nameCell = row.querySelector('td:nth-child(3)'); // Assuming the name is in the 3rd column
+        if (nameCell) {
+            const nameText = nameCell.textContent.toLowerCase();
+            row.style.display = nameText.includes(searchValue) ? '' : 'none';
+        }
+    });
+});
+document.getElementById('search-input').addEventListener('keypress',function(event){
+    if(event.key==='Enter'){
+        document.getElementById('search-btn').click();
     }
 });
