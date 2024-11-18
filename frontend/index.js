@@ -142,8 +142,98 @@ document.addEventListener('DOMContentLoaded', async () => {
             const sortedData = sortData(filteredData, 'hardSolved', hardSolvedDirection, true);
             renderLeaderboard(sortedData);
         });
+        const pieChartCanvas = document.getElementById('section-by-pie-chart');
+        const calculateSectionDistribution = () => {
+                        const sectionCounts = {};
+                        data.forEach(student => {
+                            const section = student.section || 'N/A';
+                            sectionCounts[section] = (sectionCounts[section] || 0) + 1;
+                        });
+                        return sectionCounts;
+                    };
+        
+        const renderPieChart = () => {
+            console.log("calculating")
+            const sectionDistribution = calculateSectionDistribution();
+            const labels = Object.keys(sectionDistribution);
+            const values = Object.values(sectionDistribution);
+
+            new Chart(pieChartCanvas, {
+                type: 'pie',
+                data: {
+                    labels,
+                    datasets: [
+                        {
+                            data: values,
+                            backgroundColor: [
+                                'rgb(240, 237, 79)',
+                                'rgb(48, 148, 237)',
+                                'rgb(174, 38, 179)',
+                                'rgb(78, 227, 31)',
+                                'rgb(163, 94, 31)',
+                                'rgb(126, 163, 227)'
+                            ],
+                            borderColor: [
+                                'black',
+                                'black',
+                                'black',
+                                'black',
+                                'black',
+                                'black'
+                            ],
+                            borderWidth: 1.5
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: (context) => {
+                                    const total = values.reduce((a, b) => a + b, 0);
+                                    const percentage = ((context.raw / total) * 100).toFixed(2);
+                                    return `${context.label}: ${context.raw} (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        };
+ 
+        renderPieChart();
+        
+        
 
     } catch (error) {
         console.error('Error fetching data:', error);
     }
 });
+document.addEventListener('DOMContentLoaded', function () {  
+    const sBar = document.getElementById('search-bar');  
+    const leaderboardBody = document.getElementById('leaderboard-body');  
+
+    sBar.addEventListener('input', function () {  
+        const query = sBar.value.toLowerCase();  
+        const rows = leaderboardBody.getElementsByTagName('tr');  
+
+        for (let i = 0; i < rows.length; i++) {  
+            const nameCell = rows[i].getElementsByTagName('td')[2];   
+            if (nameCell) {  
+                const nameText = nameCell.textContent.toLowerCase();  
+                if (nameText.includes(query)) {  
+                    rows[i].style.display = '';  
+                } else {  
+                    rows[i].style.display = 'none';  
+                }  
+            }  
+        }  
+    });  
+});
+
+ 
+ 
