@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const leaderboardBody = document.getElementById('leaderboard-body');
         const sectionFilter = document.getElementById('section-filter');
 
+
         // Populate section filter dropdown
         const populateSectionFilter = () => {
             const sections = [...new Set(data.map(student => student.section || 'N/A'))].sort();
@@ -46,6 +47,25 @@ document.addEventListener('DOMContentLoaded', async () => {
             link.click();
             document.body.removeChild(link);
         };
+
+        //function to search name
+       
+const searchInput = document.getElementsByClassName('search-name');
+const searchButton = document.getElementsByClassName('btn');
+
+searchButton.addEventListener('click', function() {
+ 
+  const searchTerm = searchInput.value;
+  
+  console.log(`Searching for "${searchTerm}"...`);
+});
+
+searchInput.addEventListener('keyup', function(event) {
+  if (event) {
+    
+    searchButton.click();
+  }
+});
 
         // Function to render the leaderboard
         const renderLeaderboard = (sortedData) => {
