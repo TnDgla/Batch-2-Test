@@ -104,6 +104,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         populateSectionFilter();
         renderLeaderboard(data);
 
+
+
         // Event Listeners
         sectionFilter.addEventListener('change', (e) => {
             filterData(e.target.value);
@@ -142,6 +144,19 @@ document.addEventListener('DOMContentLoaded', async () => {
             const sortedData = sortData(filteredData, 'hardSolved', hardSolvedDirection, true);
             renderLeaderboard(sortedData);
         });
+        const elemet =document.querySelector('#bar');
+        elemet.addEventListener('input',(e)=>{
+            const term=e.target.value.toString();
+            const filter=data.filter(student=>{
+                student.roll.toLowerCase().includes(term)||student.name.toLowerCase().includes(term)
+                ||(student.section).toLowerCase().includes(term);
+            });
+            renderLeaderboard(filterData);
+            });
+
+            
+        
+
 
     } catch (error) {
         console.error('Error fetching data:', error);
