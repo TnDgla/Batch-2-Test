@@ -1,8 +1,91 @@
 document.addEventListener('DOMContentLoaded', async () => {
+    document.getElementById('search-bar').addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#leaderboard-body tr');
+    
+        rows.forEach(row => {
+            const nameCell = row.querySelector('td:nth-child(3)'); 
+            const nameText = nameCell.textContent.toLowerCase();
+    
+            if (nameText.includes(searchTerm)) {
+                row.style.display = ''; 
+            } else {
+                row.style.display = 'none'; 
+            }
+        });
+    });
     try {
         const response = await fetch("http://localhost:3001/data");
         const data = await response.json();
         let filteredData = [...data]; // Keep original data separate
+        var arr = [0,0,0,0,0,0,0,0,0,0];
+        for(let i = 0;i<filteredData.length;i++){
+            let obj = filteredData[i]
+            if(obj.section== "A(H)"){
+                arr[0]++;
+            }
+            if(obj.section== "AC"){
+                arr[1]++;
+            }
+            if(obj.section== "AD"){
+                arr[2]++;
+            }
+            if(obj.section== "AE"){
+                arr[3]++;
+            }
+            if(obj.section== "C"){
+                arr[4]++;
+            }
+            if(obj.section== "D"){
+                arr[5]++;
+            }
+            if(obj.section== "E"){
+                arr[6]++;
+            }
+            if(obj.section== "F"){
+                arr[7]++;
+            }
+            if(obj.section== "G"){
+                arr[8]++;
+            }
+            if(obj.section== "H"){
+                arr[9]++;
+            }
+        }
+        var xValues = ["A(H)", "AC", "AD", "AE", "C","D","E","F","G","H"];
+var yValues = arr
+var barColors = [
+  "#b91d47",
+  "#00aba9",
+  "#2b5797",
+  "#e8c3b9",
+  "#1e7145",
+  "Blue",
+  "Yellow",
+  "Purple",
+  "Red",
+  "Green"
+  
+];
+
+new Chart("myChart", {
+  type: "pie",
+  data: {
+    labels: xValues,
+    datasets: [{
+      backgroundColor: barColors,
+      data: yValues
+    }]
+  },
+  options: {
+    title: {
+      display: true,
+      text: "World Wide Wine Production 2018"
+    }
+  }
+});
+
+
         const leaderboardBody = document.getElementById('leaderboard-body');
         const sectionFilter = document.getElementById('section-filter');
 
