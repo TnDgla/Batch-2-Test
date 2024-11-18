@@ -1,10 +1,89 @@
+const input=document.getElementById("search")
+const searchbtn=document.getElementById("searchbtn");
+const ctx = document.getElementById('myChart');
+const chartContainer=document.querySelector(".chart-container");
+const chartShow=document.querySelector("#chartShow");
+chartContainer.style.display="none"
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         const response = await fetch("http://localhost:3001/data");
         const data = await response.json();
+        // console.log(data);
         let filteredData = [...data]; // Keep original data separate
         const leaderboardBody = document.getElementById('leaderboard-body');
         const sectionFilter = document.getElementById('section-filter');
+        // Adding search feature
+        searchbtn.addEventListener("click",()=>{
+            let text=input.value;
+            if(text!=""){
+                let newData=[];
+                for(let i of data){
+                    // console.log(i.name);
+                    text=text.toLowerCase();
+                    let str=i.name.toLowerCase();
+                    if(str.includes(text)){
+                        // console.log(i);
+                        newData.push(i);
+                    }
+                }
+                renderLeaderboard(newData);
+            }
+        })
+
+        // Adding pie chart
+        let sectionName={}
+        for(let i of data){
+            if(sectionName[i.section]!=null){
+                sectionName[i.section]=(sectionName[i.section]+1)
+            }else{
+                sectionName[i.section]=1;
+            }
+        }
+        let arr=[]
+        let name=[]
+        for(let i in sectionName){
+            arr.push(sectionName[i])
+            name.push(i)
+        }
+        
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+              labels: name,
+              datasets: [{
+                label: '# of Votes',
+                data: arr,
+                borderWidth: 1
+              }]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        labels: {
+                            // This more specific font property overrides the global property
+                            font: {
+                                size: 15
+                            }
+                        }
+                    }
+                },
+              scales: {
+                y: {
+                  beginAtZero: false
+                }
+              }
+            }
+          });
+          let showChart=true;
+          chartShow.addEventListener("click",()=>{
+            if(showChart){
+                chartContainer.style.cssText="position: relative;  height:80vh;  background-color: aliceblue; display: flex; justify-content: center; display: flex; justify-content: center;align-items: center;";
+                showChart=!showChart
+            }else{
+                chartContainer.style.display="none";
+                showChart=!showChart
+            }
+          })
 
         // Populate section filter dropdown
         const populateSectionFilter = () => {
