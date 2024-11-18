@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         const response = await fetch("http://localhost:3001/data");
@@ -78,6 +79,18 @@ document.addEventListener('DOMContentLoaded', async () => {
                 : data.filter(student => (student.section || 'N/A') === section);
             renderLeaderboard(filteredData);
         };
+
+        // Search by name
+        const searchName = document.getElementById('name-filter');
+        const filterByName = (name) => {
+            filteredData = data.filter(student => student.name.toLowerCase().includes(name.toLowerCase()));
+            renderLeaderboard(filteredData);
+        }
+        document.getElementById('search-btn').addEventListener('click', () => {
+            filterByName(searchName.value);
+            searchName.value = '';
+        });
+        
 
         // Sorting logic with ascending and descending functionality
         let totalSolvedDirection = 'desc';
