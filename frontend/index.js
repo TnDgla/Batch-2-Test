@@ -99,11 +99,22 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             });
         };
-
+        const Search =  (query)=>{
+            const lowerCasequery = query.toLowerCase();
+            Data = data.filter(student=>
+                student.name.toLowerCase().includes(lowerCasequery)
+            );
+            renderLeaderboard(Data);
+        };
+        document.getElementById('search').addEventListener('input',(e)=>{
+            const query = e.target.value;
+            Search(query);
+        });
         // Initialize the page
         populateSectionFilter();
         renderLeaderboard(data);
-
+       
+        
         // Event Listeners
         sectionFilter.addEventListener('change', (e) => {
             filterData(e.target.value);
@@ -143,6 +154,37 @@ document.addEventListener('DOMContentLoaded', async () => {
             renderLeaderboard(sortedData);
         });
 
+        const xValues = ["A(H)", "AC", "AD", "AE", "C","D","E","F","G","H"];
+        const yValues = [55, 49, 44, 24, 15,43,45,67,32,54];
+        const barColors = [
+             "#b91d47",
+             "#00aba9",
+             "#2b5797",
+             "#e8c3b9",
+             "#1e7145",
+             "#00FF00",
+             "800000",
+             "A52A2A",
+             "#7FFFD4",
+             "#808080",
+            ];
+        
+        new Chart("myChart", {
+            type: "pie",
+            data: {
+              labels: xValues,
+              datasets: [{
+                backgroundColor: barColors,
+                data: yValues
+              }]
+            },
+            options: {
+              title: {
+                display: true,
+                text: "World Wide Wine Production"
+              }
+            }
+          });
     } catch (error) {
         console.error('Error fetching data:', error);
     }
