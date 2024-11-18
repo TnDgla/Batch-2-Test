@@ -147,3 +147,20 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error('Error fetching data:', error);
     }
 });
+function filterUsers() {
+    const searchInput = document.getElementById('searchBar').value.toLowerCase();
+    const table = document.getElementById('userTable');
+    const rows = table.getElementsByTagName('tr');
+    for (let i = 1; i < rows.length; i++) {
+        const cells = rows[i].getElementsByTagName('td');
+        let found = false;
+        for (let j = 0; j < cells.length; j++) {
+            if (cells[j].textContent.toLowerCase().includes(searchInput)) {
+                found = true;
+                break;
+            }
+        }
+        rows[i].style.display = found ? '' : 'none';
+    }
+}
+
