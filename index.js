@@ -89,3 +89,36 @@ setInterval(fetchAndSaveData, 60 * 60 * 1000);
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
 });
+
+let obj1 = JSON.parse(data.jsom);
+
+function filterTable() {
+  const query = document.getElementById("myInput").value.toLowerCase();
+  const rows = document.querySelectorAll("#leaderboard tbody tr");
+
+  rows.forEach(row => {
+      let ka = obj1.filter(function (i,n){
+        return n.website==='google';
+      });
+      const name = row.querySelector("td.name").textContent.toLowerCase();
+      row.style.display = ka.includes(query) ? "" : "none";
+  });
+}
+
+
+new Chart("myChart", {
+  type: "pie",
+  data: {
+    labels: ['B','C','D','AB'],
+    datasets: [{
+      backgroundColor: barColors,
+      data: [20,40,103,120]
+    }]
+  },
+  options: {
+    title: {
+      display: true,
+      text: "World Wide Wine Production"
+    }
+  }
+});

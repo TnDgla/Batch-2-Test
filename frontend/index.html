@@ -5,9 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
     <title>LeetCode Leaderboard</title>
 </head>
 <body class="bg-gray-900 text-white p-5">
+    
+                 
+    <input type="text" id="myInput" onkeyup="filterTable()" placeholder="Search for names..">
+    
+    <table id="leaderboard">
+        <tbody>
+            <tr></tr>
+        </tbody>
+    </table>
+
+    <canvas id="myChart"></canvas>
+
+ 
+
     <div class="container mx-auto my-10">
         <div class="">
             <!-- Leaderboard -->
@@ -85,5 +101,22 @@
         </div>
     </div>
     <script src="index.js"></script>
+    <script src="../index.js"></script>
+
+    <script>
+        
+        const sectionData = JSON.parse(data.json);
+
+    const config = {
+        type: 'pie',
+        data: sectionData
+    };
+
+    const sectionChart = new Chart(
+        document.getElementById('sectionChart'),
+        config
+    );
+    </script>
+    
 </body>
 </html>
