@@ -15,3 +15,16 @@ tr {
 tr:hover {
     background-color: rgba(255, 255, 255, 0.1);
 }
+
+
+
+
+#search-bar {
+    margin-bottom: 1rem;
+    border: 1px solid #4a5568;
+    font-size: 1rem;
+}
+
+#search-bar::placeholder {
+    color: #a0aec0;
+}
