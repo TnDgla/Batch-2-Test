@@ -104,6 +104,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         populateSectionFilter();
         renderLeaderboard(data);
 
+        
+
         // Event Listeners
         sectionFilter.addEventListener('change', (e) => {
             filterData(e.target.value);
