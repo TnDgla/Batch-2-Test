@@ -77,6 +77,17 @@ async function fetchAndSaveData() {
     console.error('Error processing data:', error);
   }
 }
+const ctx = document.getElementById('myPieChart').getContext('2d');
+        const myPieChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['A(H)','AC','AD','AE','C','D','E','F','G','H'],
+                datasets: [{
+                    data: [10,20,30,40,50,60],
+                    backgroundColor: ['red', 'blue', 'green','purple','pink','yellow','cyan','aqua','seagreen','skyblue'],
+                }]
+            }
+        });
 
 app.get('/data', (req, res) => {
   res.sendFile(__dirname + '/data.json');
