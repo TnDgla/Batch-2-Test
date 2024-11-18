@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('export-btn').addEventListener('click', () => {
             exportToCSV(filteredData); // Export only filtered data
         });
-
+        
         document.getElementById('sort-section').addEventListener('click', () => {
             sectionDirection = sectionDirection === 'desc' ? 'asc' : 'desc';
             const sortedData = sortData(filteredData, 'section', sectionDirection, false);
@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const sortedData = sortData(filteredData, 'hardSolved', hardSolvedDirection, true);
             renderLeaderboard(sortedData);
         });
-
+        
     } catch (error) {
         console.error('Error fetching data:', error);
     }
