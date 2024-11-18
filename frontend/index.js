@@ -18,6 +18,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         };
 
+
+
+
         // Function to export data to CSV
         const exportToCSV = (data) => {
             const headers = ['Rank', 'Roll Number', 'Name', 'Section', 'Total Solved', 'Easy', 'Medium', 'Hard', 'LeetCode URL'];
@@ -45,8 +48,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+        
         };
-
+  
         // Function to render the leaderboard
         const renderLeaderboard = (sortedData) => {
             leaderboardBody.innerHTML = '';
