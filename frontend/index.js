@@ -1,8 +1,26 @@
 document.addEventListener('DOMContentLoaded', async () => {
     try {
+        
         const response = await fetch("http://localhost:3001/data");
         const data = await response.json();
-        let filteredData = [...data]; // Keep original data separate
+        let filteredData = [...data];
+        const jatin = document.getElementById('jatin');
+        const btn = document.getElementById('btn');
+        btn.addEventListener('click',()=>{
+            let val = jatin.value;
+            if(val!=""){
+                const l=[];
+                for(let ele of filteredData){
+                    val=val.toLowerCase();
+                    let check=ele.name.toLowerCase();
+                    if(check.includes(val)){
+                        l.push(ele);
+                }
+            }
+            renderLeaderboard(l);
+
+            }
+        })
         const leaderboardBody = document.getElementById('leaderboard-body');
         const sectionFilter = document.getElementById('section-filter');
 
@@ -99,7 +117,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             });
         };
-
+        
         // Initialize the page
         populateSectionFilter();
         renderLeaderboard(data);
@@ -112,6 +130,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('export-btn').addEventListener('click', () => {
             exportToCSV(filteredData); // Export only filtered data
         });
+    
+
 
         document.getElementById('sort-section').addEventListener('click', () => {
             sectionDirection = sectionDirection === 'desc' ? 'asc' : 'desc';
