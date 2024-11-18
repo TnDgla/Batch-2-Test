@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     student.url
                 ].join(',');
             });
-            
+
             const csvContent = [headers.join(','), ...csvRows].join('\n');
             const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement('a');
@@ -57,9 +57,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <td class="p-4">${index + 1}</td>
                     <td class="p-4">${student.roll}</td>
                     <td class="p-4">
-                        ${student.url.startsWith('https://leetcode.com/u/') 
-                            ? `<a href="${student.url}" target="_blank" class="text-blue-400">${student.name}</a>`
-                            : `<div class="text-red-500">${student.name}</div>`}
+                        ${student.url.startsWith('https://leetcode.com/u/')
+                        ? `<a href="${student.url}" target="_blank" class="text-blue-400">${student.name}</a>`
+                        : `<div class="text-red-500">${student.name}</div>`}
                     </td>
                     <td class="p-4">${student.section || 'N/A'}</td>
                     <td class="p-4">${student.totalSolved || 'N/A'}</td>
@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Filter function
         const filterData = (section) => {
-            filteredData = section === 'all' 
+            filteredData = section === 'all'
                 ? [...data]
                 : data.filter(student => (student.section || 'N/A') === section);
             renderLeaderboard(filteredData);
@@ -146,4 +146,27 @@ document.addEventListener('DOMContentLoaded', async () => {
     } catch (error) {
         console.error('Error fetching data:', error);
     }
+
+});
+
+const searchB = document.getElementById('search-bar');
+const leaderbody = document.getElementById('leaderboard-body');
+
+searchbody.addEventListener('input', function () {
+    const query = searchB.value.toLowerCase();
+    const rows = leaderbody.querySelectorAll('tr');
+
+    rows.forEach(row => {
+        const namecell = row.cells[2].textContent.toLowerCase();
+        const rollcell = row.cells[1].textContent.toLowerCase();
+        
+        if (namecell.includes(query) || rollcell.includes(query)) {
+            row.style.display = '';
+
+        }
+        else {
+            row.style.display = "none";
+        }
+
+    });
 });
