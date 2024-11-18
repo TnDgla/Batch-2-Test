@@ -70,6 +70,24 @@ document.addEventListener('DOMContentLoaded', async () => {
                 leaderboardBody.appendChild(row);
             });
         };
+        
+
+        // Bonus Task - To select the best performers based on the average score of the questions done on lleetcode
+
+        const best = document.getElementById('best');
+        best.addEventListener('click',()=>{
+            newData = data.filter(student => ((student.mediumSolved/190 + student.hardSolved/31 + student.easySolved/837) > 0.3));
+            renderLeaderboard(newData);
+        });
+
+        // Search by name feature
+        const bttn = document.getElementById("search-button");
+        bttn.addEventListener('click',()=>{
+            const input = document.getElementById("search-input");
+            const ans = input.value.toUpperCase();
+            newData = data.filter(student => (student.name.includes(ans)));
+            renderLeaderboard(newData);
+        });
 
         // Filter function
         const filterData = (section) => {
@@ -99,6 +117,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             });
         };
+
+        // Initialize Chart
+        const ctx = document.getElementById('myChart').getContext('2d');
+        const myChart = new Chart(ctx, {
+        type: 'bar', // or 'line', 'pie', etc.
+        data: data.section,
+        options: {} // optional, for customizing chart appearance
+        });
 
         // Initialize the page
         populateSectionFilter();
