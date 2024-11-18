@@ -70,6 +70,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                 leaderboardBody.appendChild(row);
             });
         };
+        document.getElementById('export-btn').addEventListener('click', () => {
+            exportToCSV(filteredData); // Export only filtered data
+        });
 
         // Filter function
         const filterData = (section) => {
