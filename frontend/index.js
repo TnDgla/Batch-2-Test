@@ -6,6 +6,45 @@ document.addEventListener('DOMContentLoaded', async () => {
         const leaderboardBody = document.getElementById('leaderboard-body');
         const sectionFilter = document.getElementById('section-filter');
 
+        // Assessment Feature Implementation
+        const searchBox = document.getElementById("searchBox");
+        const searchBtn = document.getElementById("searchBtn");
+        const chartBtn = document.getElementById("showChart");
+        const chart = document.getElementById("chart");
+        const searchByName = () =>{
+            const searchedName=searchBox.value;
+            filteredData = data.filter(student => student.name.includes(searchedName.toUpperCase()));
+            renderLeaderboard(filteredData);
+        }
+        const displayChart = () =>{
+            const sectionData=[...new Set(data.map(student=>student.section))].sort();
+            const participants=new Map();
+            sectionData.forEach(section => participants.set(section,0));
+            console.log(participants);
+            data.forEach(student => participants.set(student.section,participants.get(student.section)+1));
+            const yValues=[...participants.values()]
+            const colors=["red","green","blue","orange","black","pink","yellow","purple","white","sky"]
+            chart.classList.remove("hidden")
+            new Chart(chart,{
+                type:'pie',
+                data:{
+                    labels:sectionData,
+                    datasets: [{
+                        backgroundColor: colors,
+                        data: yValues
+                    }]
+                },
+                options: {
+                    responsive:true
+                }
+            });
+        }
+        searchBtn.addEventListener('click',()=>{
+            searchByName();
+        })
+        chartBtn.addEventListener('click',()=>{
+            displayChart();
+        })
         // Populate section filter dropdown
         const populateSectionFilter = () => {
             const sections = [...new Set(data.map(student => student.section || 'N/A'))].sort();
