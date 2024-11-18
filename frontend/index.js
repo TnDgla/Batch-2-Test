@@ -29,7 +29,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                     student.section || 'N/A',
                     student.totalSolved || 'N/A',
                     student.easySolved || 'N/A',
-                    student.mediumSolved || 'N/A',
                     student.hardSolved || 'N/A',
                     student.url
                 ].join(',');
@@ -142,8 +141,89 @@ document.addEventListener('DOMContentLoaded', async () => {
             const sortedData = sortData(filteredData, 'hardSolved', hardSolvedDirection, true);
             renderLeaderboard(sortedData);
         });
+        const searchBar = document.getElementById('search');
+        document.getElementById('search').addEventListener('input', () => {
+            const query = searchBar.value.toLowerCase();
+            const rows = leaderboardBody.getElementsByTagName('tr');
+            for(let i =0; i<rows.length; i++){
+                const nameCell = rows[i].getElementsByTagName('td')[2];
+                if(nameCell){
+                    const nameText = nameCell.textContent.toLowerCase();
+                    if(nameText.includes(query)){
+                        rows[i].style.display = '';
+                    }else{
+                        rows[i].style.display = 'none';
+                    }
+                }
+            }
+        });
+        const pieChartCanvas = document.getElementById('section-pie-chart');
+        const calculateSectionDistribution = () => {
+                        const sectionCounts = {};
+                        data.forEach(student => {
+                            const section = student.section || 'N/A';
+                            sectionCounts[section] = (sectionCounts[section] || 0) + 1;
+                        });
+                        return sectionCounts;
+                    };
+        // Function to render the pie chart
+        const renderPieChart = () => {
+            const sectionDistribution = calculateSectionDistribution();
+            const labels = Object.keys(sectionDistribution);
+            const values = Object.values(sectionDistribution);
+
+            new Chart(pieChartCanvas, {
+                type: 'pie',
+                data: {
+                    labels,
+                    datasets: [
+                        {
+                            data: values,
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.4)',
+                                'rgba(54, 162, 235, 0.4)',
+                                'rgba(255, 206, 86, 0.4)',
+                                'rgba(75, 192, 192, 0.4)',
+                                'rgba(153, 102, 255, 0.4)',
+                                'rgba(255, 159, 64, 0.4)'
+                            ],
+                            borderColor: [
+                                'white',
+                                'white',
+                                'white',
+                                'white',
+                                'white',
+                                'white'
+                            ],
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: (context) => {
+                                    const total = values.reduce((a, b) => a + b, 0);
+                                    const percentage = ((context.raw / total) * 100).toFixed(2);
+                                    return `${context.label}: ${context.raw} (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        };
+
+        // Render the pie chart after loading data
+        renderPieChart();
 
     } catch (error) {
         console.error('Error fetching data:', error);
     }
+    
 });
