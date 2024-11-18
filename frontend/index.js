@@ -6,6 +6,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         const leaderboardBody = document.getElementById('leaderboard-body');
         const sectionFilter = document.getElementById('section-filter');
 
+    
+        
+
         // Populate section filter dropdown
         const populateSectionFilter = () => {
             const sections = [...new Set(data.map(student => student.section || 'N/A'))].sort();
@@ -142,8 +145,40 @@ document.addEventListener('DOMContentLoaded', async () => {
             const sortedData = sortData(filteredData, 'hardSolved', hardSolvedDirection, true);
             renderLeaderboard(sortedData);
         });
+        const search=document.getElementById('search');
+        const btn=document.getElementById('btn');
+         btn.addEventListener('click',()=>{
+            const tar=search.value.toUpperCase();
+            content=filteredData.filter(x=>(x.name).startsWith(tar));
+            renderLeaderboard(content);
+        })
+        
+        // const chr=document.getElementById('chart');
+        
+        // new Chart(chr, {
+        //         type:'pie',
+        //         label:[
+        //             'B',
+        //             'C',
+        //             'D',
+        //             'E',
+        //             'F',
+        //         ],
+        //         datasets:[{
+        //             label:'sections',
+        //             data:[60,12,30,99],
+        //             borderWidth:1,
+        //             radius:120
+        //         }]
+
+                
+        //     });
+         
 
     } catch (error) {
         console.error('Error fetching data:', error);
     }
 });
+
+
+ 
