@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     student.url
                 ].join(',');
             });
-            
+
             const csvContent = [headers.join(','), ...csvRows].join('\n');
             const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement('a');
@@ -57,9 +57,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <td class="p-4">${index + 1}</td>
                     <td class="p-4">${student.roll}</td>
                     <td class="p-4">
-                        ${student.url.startsWith('https://leetcode.com/u/') 
-                            ? `<a href="${student.url}" target="_blank" class="text-blue-400">${student.name}</a>`
-                            : `<div class="text-red-500">${student.name}</div>`}
+                        ${student.url.startsWith('https://leetcode.com/u/')
+                        ? `<a href="${student.url}" target="_blank" class="text-blue-400">${student.name}</a>`
+                        : `<div class="text-red-500">${student.name}</div>`}
                     </td>
                     <td class="p-4">${student.section || 'N/A'}</td>
                     <td class="p-4">${student.totalSolved || 'N/A'}</td>
@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Filter function
         const filterData = (section) => {
-            filteredData = section === 'all' 
+            filteredData = section === 'all'
                 ? [...data]
                 : data.filter(student => (student.section || 'N/A') === section);
             renderLeaderboard(filteredData);
@@ -142,7 +142,60 @@ document.addEventListener('DOMContentLoaded', async () => {
             const sortedData = sortData(filteredData, 'hardSolved', hardSolvedDirection, true);
             renderLeaderboard(sortedData);
         });
+        document.getElementById('Searchedbutton').addEventListener('click', () => {
+            const SearchedText = document.getElementById('Search').value
+            const searchedData = filteredData.filter((data) => data.name === SearchedText)
+            renderLeaderboard(searchedData);
+        })
 
+        document.getElementById('pie').addEventListener('click', () => {
+            const countMap = new Map();
+            filteredData.forEach(item => {
+                const section = item.section || 'N/A';
+                countMap.set(section, (countMap.get(section) || 0) + 1);
+            });
+        
+            // Convert Map to arrays
+            const keys = Array.from(countMap.keys());
+            const values = Array.from(countMap.values());
+        
+            // Remove any existing canvas before adding a new one
+            const existingCanvas = document.getElementById('pieChart');
+            if (existingCanvas) {
+                existingCanvas.remove();
+            }
+        
+            // Create and set up new canvas element for the pie chart
+            const canvas = document.createElement('canvas');
+            canvas.id = 'pieChart';
+            document.getElementById('piec').appendChild(canvas);
+        
+            // Set up the pie chart with Chart.js
+            const ctx = canvas.getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: keys,
+                    datasets: [{
+                        label: 'Section Distribution',
+                        data: values,
+                        backgroundColor: [
+                            'red', 'blue', 'green', 'yellow', 'orange', 'purple', 
+                            'grey', 'white', 'indigo', 'violet'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                    }
+                }
+            });
+        });
+        
     } catch (error) {
         console.error('Error fetching data:', error);
     }
