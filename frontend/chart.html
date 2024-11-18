@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div width="200" height="40">
+        <canvas id="section-A(H)"></canvas>
+        <canvas id="section-AC"></canvas>
+        <canvas id="section-AD"></canvas>
+        <canvas id="section-AE"></canvas>
+        <canvas id="section-C"></canvas>
+        <canvas id="section-D"></canvas>
+        <canvas id="section-E"></canvas>
+        <canvas id="section-F"></canvas>
+    </div>
+
+
+    
+    <script>
+        const showPieChart = async () => {
+            const response = await fetch("http://localhost:3001/data");
+            const data = await response.json();
+        
+            const sectionAH = document.getElementById('section-A(H)');
+            //student.easySolved should be a number
+            const easySectionAH = data.filter(student => student.section === 'A(H)' && student.easySolved).map(student => student.easySolved).reduce((a, b) => a + b, 0);
+            const hardSectionAH = data.filter(student => student.section === 'A(H)' && student.hardSolved).map(student => student.hardSolved).reduce((a, b) => a + b, 0);
+            const mediumSectionAH = data.filter(student => student.section === 'A(H)' && student.mediumSolved).map(student => student.mediumSolved).reduce((a, b) => a + b, 0);
+            
+            new Chart(sectionAH, {
+                type: 'pie',
+                data: {
+                    labels: ['Easy', 'Medium', 'Hard'],
+                    datasets: [{
+                        label: 'Section A(H)',
+                        data: [easySectionAH, mediumSectionAH, hardSectionAH],
+                        backgroundColor: ['green', 'yellow', 'red'],
+                        borderColor: ['green', 'yellow', 'red'],
+                        borderWidth: 1
+                    }]
+                },
+            })
+        }
+
+        showPieChart();
+    </script>
+</body>
+</html>
