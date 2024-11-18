@@ -100,6 +100,40 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         };
 
+        // Implementation of a Search feature
+
+        document.getElementById('search-input').addEventListener('input', (e) => {
+            const searchValue = e.target.value.toLowerCase();
+            const filteredData = data.filter(student => student.name.toLowerCase().includes(searchValue));
+            renderLeaderboard(filteredData);
+        });
+
+        const filterSection = (section) => {
+            const len = data.filter(student => student.section == section).length;
+            return len;
+        };
+
+        const yValue = [filterSection("C"),filterSection("D"),filterSection("E"),filterSection("F"),filterSection("G"),filterSection("H"),filterSection("A(H)"),filterSection("AC"),filterSection("AD"),filterSection("AE")]
+
+        const myChart = new Chart(document.getElementById('myChart'), {
+            type: 'pie',
+            data: {
+                labels: ['C', 'D', 'E', 'F', 'G', 'H', 'A(H)', 'AC, AD, AE'],
+                datasets:[
+                    {
+                        backgroundColor:["red","green", "pink", "yellow", "maroon", "white", "blue", "aqua", "violet", "magenta"],
+                        data: yValue
+                    }
+                ],
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: "Section Wise Data"
+                },
+            }
+        });
+
         // Initialize the page
         populateSectionFilter();
         renderLeaderboard(data);
