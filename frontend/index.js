@@ -48,6 +48,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         };
 
         // Function to render the leaderboard
+        
         const renderLeaderboard = (sortedData) => {
             leaderboardBody.innerHTML = '';
             sortedData.forEach((student, index) => {
