@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         });
         
-   
+       
     
         // Filter function
         const filterData = (section) => {
