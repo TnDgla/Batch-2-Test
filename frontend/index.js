@@ -78,7 +78,18 @@ document.addEventListener('DOMContentLoaded', async () => {
                 : data.filter(student => (student.section || 'N/A') === section);
             renderLeaderboard(filteredData);
         };
-
+        const search=(query)=>{
+            const lowerCasequery=query.toLowerCase();
+            filteredData=data.filter(sturdent=>
+                student.name.toLowerCase().includes(lowerCasequery)
+            );
+            renderLeaderboard(filterData);
+        }
+        document.getElementById('search-bar').addEventListener('input',(e)=>{
+            const query=e.target.value;
+            search(query);
+        })
+        
         // Sorting logic with ascending and descending functionality
         let totalSolvedDirection = 'desc';
         let easySolvedDirection = 'desc';
