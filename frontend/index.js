@@ -100,6 +100,19 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         };
 
+        const filterBySearch=(query)=>{
+            const lowerCaseQuery=query.toLowerCase();
+            filteredData=data.filter(student=>
+                student.name.toLowerCase().includes(lowerCaseQuery)
+            );
+            renderLeaderboard(filteredData);
+        };
+
+        document.getElementById('search-input').addEventListener('input', (e)=>{
+            const query=e.target.value;
+            filterBySearch(query);
+        });
+
         // Initialize the page
         populateSectionFilter();
         renderLeaderboard(data);
@@ -141,6 +154,37 @@ document.addEventListener('DOMContentLoaded', async () => {
             hardSolvedDirection = hardSolvedDirection === 'desc' ? 'asc' : 'desc';
             const sortedData = sortData(filteredData, 'hardSolved', hardSolvedDirection, true);
             renderLeaderboard(sortedData);
+        });
+
+        document.getElementById('main').addEventListener('click',()=>{
+            main.innerHTML='<canvas id="myChart" style="width:100%;max-width:600px"></canvas>'
+        })
+
+        var xValues = ["Italy", "France", "Spain", "USA", "Argentina"];
+        var yValues = [55, 49, 44, 24, 15];
+        var barColors = [
+        "#b91d47",
+        "#00aba9",
+        "#2b5797",
+        "#e8c3b9",
+        "#1e7145"
+        ];
+
+        new Chart("myChart", {
+            type: "pie",
+            data: {
+                labels: xValues,
+                datasets: [{
+                backgroundColor: barColors,
+                data: yValues
+                }]
+            },
+            options: {
+                title: {
+                display: true,
+                text: "World Wide Wine Production 2018"
+                }
+            }
         });
 
     } catch (error) {
