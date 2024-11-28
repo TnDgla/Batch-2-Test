@@ -18,6 +18,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         };
 
+        
+
         // Function to export data to CSV
         const exportToCSV = (data) => {
             const headers = ['Rank', 'Roll Number', 'Name', 'Section', 'Total Solved', 'Easy', 'Medium', 'Hard', 'LeetCode URL'];
@@ -99,6 +101,24 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             });
         };
+        const filterBySearch = (query) => {
+            const lowerCaseQuery = query.toLowerCase();
+            filteredData = data.filter(student =>
+                student.name.toLowerCase().includes(lowerCaseQuery) 
+                
+            );
+            renderLeaderboard(filteredData);
+        };
+        
+       
+        document.getElementById('search-input').addEventListener('input', (e) => {
+            const query = e.target.value;
+            filterBySearch(query);
+        });
+
+        
+
+
 
         // Initialize the page
         populateSectionFilter();
@@ -141,6 +161,33 @@ document.addEventListener('DOMContentLoaded', async () => {
             hardSolvedDirection = hardSolvedDirection === 'desc' ? 'asc' : 'desc';
             const sortedData = sortData(filteredData, 'hardSolved', hardSolvedDirection, true);
             renderLeaderboard(sortedData);
+        });
+
+        var xValues = ["Section-C", "Section-D", "Section-E", "Section-F", "Section-H"];
+        var yValues = [76, 73,74 , 75, 76];
+        var barColors = [
+        "#b91d47",
+        "#00aba9",
+        "#2b5797",
+        "#e8c3b9",
+        "#1e7145"
+        ];
+
+        new Chart("myChart", {
+        type: "pie",
+        data: {
+            labels: xValues,
+            datasets: [{
+            backgroundColor: barColors,
+            data: yValues
+            }]
+        },
+        options: {
+            title: {
+            display: true,
+            text: "World Wide Wine Production 2018"
+            }
+        }
         });
 
     } catch (error) {
